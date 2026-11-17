@@ -312,3 +312,43 @@ test('Evalúa una igualdad falsa', () => {
   assert.equal(resultado.ok, true);
   assert.equal(resultado.valor, false);
 });
+
+test('Evalúa una negación verdadera', () => {
+  const preparado = prepararEvaluacion(
+    '¬P(x)',
+    lenguaje,
+    interpretacion,
+    { x: 'b' }
+  );
+
+  assert.equal(preparado.ok, true);
+
+  const resultado = evaluar(
+    preparado.ast,
+    interpretacion,
+    preparado.entorno
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, true);
+});
+
+test('Evalúa una negación falsa', () => {
+  const preparado = prepararEvaluacion(
+    '¬P(x)',
+    lenguaje,
+    interpretacion,
+    { x: 'a' }
+  );
+
+  assert.equal(preparado.ok, true);
+
+  const resultado = evaluar(
+    preparado.ast,
+    interpretacion,
+    preparado.entorno
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, false);
+});

@@ -98,6 +98,16 @@ function evaluarNodo(nodo, interpretacion, entorno) {
     );
   }
 
+  if (nodo.tipo === 'no') {
+    const valorHijo = evaluarNodo(
+      nodo.hijo,
+      interpretacion,
+      entorno
+    );
+
+    return !valorHijo;
+  }
+
   throw new Error(
     `Tipo de nodo no soportado todavía: ${nodo.tipo}`
   );
