@@ -1,7 +1,7 @@
 // TEMPORAL: lo reemplazan las funciones reales de mis compañeras.
 // Este archivo implementa un parser y un evaluador semántico MÍNIMOS pero
-// FUNCIONALES, para poder probar la interfaz con cualquier fórmula válida
-// del lenguaje descrito en docs/CONTRATO.md, y no solo con casos fijos.
+// FUNCIONALES, para poder probar la interfaz con cualquier fórmula válida,
+// y no solo con casos fijos.
 //
 // Implementa las 4 funciones del contrato:
 //   LN.api.analizarFormula(texto, lenguaje)
@@ -242,9 +242,7 @@
 
   // termino := IDENT ('(' lista-de-terminos ')')?
   // Si el identificador es una función declarada -> nodo "func".
-  // Si no está declarado -> se trata como variable (ver docs/CONTRATO.md,
-  // aclaraciones pendientes, punto 3: todo identificador no declarado en
-  // posición de término es una variable).
+  // Si no está declarado -> se trata como variable.
   Parser.prototype.parseTermino = function () {
     var t = this.esperar(TIPOS.IDENT, "Se esperaba un término (una variable o una función).");
     var nombre = t.valor;
@@ -451,7 +449,7 @@
   // booleano y va guardando en "nodos" la explicación de cada id visitado.
   // Para los cuantificadores, guarda en "nodos" solo los valores del
   // "elemento decisivo" (contraejemplo o testigo) y, si no hay ninguno,
-  // los del primer elemento del dominio (ver docs/CONTRATO.md).
+  // los del primer elemento del dominio.
   function evalNodo(nodo, entorno, interpretacion, nodos) {
     var dominio = interpretacion.dominio;
 

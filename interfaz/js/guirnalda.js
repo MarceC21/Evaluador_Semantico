@@ -1,6 +1,6 @@
 // Guirnalda: cable que rodea el árbol en zigzag, con bombillitas de
-// colores que parpadean (ver docs/DISENO.md). También dibuja las dos
-// guirnaldas cortas de fondo junto al título.
+// colores que parpadean. También dibuja las dos guirnaldas cortas de
+// fondo junto al título.
 
 (function () {
   "use strict";

@@ -1,4 +1,4 @@
-// Puente hacia las funciones reales de mis compañeras (Fase 4).
+// Puente hacia las funciones reales de mis compañeras.
 //
 // Sus archivos (src/parser.js, src/validaciones.js, src/motor.js, en la
 // raíz del repo, fuera de interfaz/) usan módulos ES (import/export), así

@@ -17,6 +17,7 @@
     <h1 class="encabezado__titulo">Lógica Navideña</h1>
     <p class="encabezado__subtitulo">Evaluador semántico</p>
     <p class="encabezado__curso">MM3032 · Lógica Matemática</p>
+    <button type="button" class="boton-secundario encabezado__boton-juego" id="boton-modo-juego">Modo juego</button>
   </header>
 
   <nav class="menu-ejemplos" id="menu-ejemplos" aria-label="Cargar ejemplo">
@@ -100,25 +101,47 @@
     </section>
   </main>
 
+  <!-- Modo juego: aparece sobre la app normal, nunca junto a ella. -->
+  <div class="pantalla-juego oculto" id="pantalla-juego" aria-hidden="true">
+    <div class="juego-barra">
+      <button type="button" class="boton-secundario" id="boton-ir-mapa">Mapa de niveles</button>
+      <button type="button" class="boton-secundario" id="boton-volver-evaluador">← Volver al evaluador</button>
+    </div>
+    <div class="juego-pantalla oculto" id="juego-mapa"></div>
+    <div class="juego-pantalla oculto" id="juego-taller"></div>
+    <div class="juego-pantalla oculto" id="juego-galletas"></div>
+  </div>
+
   <!-- Motor mock (TEMPORAL, ya no se usa con LN.USAR_MOCK = false, pero
        se deja cargado por si hace falta volver a él) y casos de ejemplo -->
   <script src="mock/motor-mock.js"></script>
   <script src="mock/casos/casos.js"></script>
 
-  <!-- Funciones reales de mis compañeras (Fase 4). Es un módulo porque
-       su código usa import/export: por eso esta página necesita abrirse
-       con un servidor local (ver README.md), no con doble clic. -->
+  <!-- Funciones reales de mis compañeras. Es un módulo porque su código
+       usa import/export: por eso esta página necesita abrirse con un
+       servidor local, no con doble clic. -->
   <script type="module" src="js/real.js"></script>
 
   <!-- Interfaz -->
   <script src="js/api.js"></script>
   <script src="js/ui-lenguaje.js"></script>
   <script src="js/ui-interpretacion.js"></script>
+  <script src="js/constructor-formula.js"></script>
   <script src="js/ui-formula.js"></script>
   <script src="js/ui-resultado.js"></script>
   <script src="js/guirnalda.js"></script>
   <script src="js/arbol.js"></script>
   <script src="js/animacion.js"></script>
+
+  <!-- Modo juego -->
+  <script src="js/juego-datos.js"></script>
+  <script src="js/juego-progreso.js"></script>
+  <script src="js/juego-comun.js"></script>
+  <script src="js/juego-taller.js"></script>
+  <script src="js/juego-galletas.js"></script>
+  <script src="js/juego-mapa.js"></script>
+  <script src="js/juego-app.js"></script>
+
   <script src="js/app.js"></script>
 </body>
 </html>

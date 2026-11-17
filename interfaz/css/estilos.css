@@ -1,6 +1,5 @@
 /* ======================================================================
    Lógica Navideña — hoja de estilos
-   Paleta y tipografía según docs/DISENO.md.
    ====================================================================== */
 
 /* Fuentes locales con @font-face (Pinyon Script y Quicksand 400/500,
@@ -475,6 +474,144 @@ select:focus-visible,
   cursor: not-allowed;
 }
 
+/* --- Selector de modo: "Escribir" / "Arma tu árbol" --- */
+
+.selector-modo-formula {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.boton-modo {
+  flex: 1;
+  background: #fff;
+  color: var(--texto-secundario);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 15px;
+}
+
+.boton-modo--activo {
+  background: var(--titulo);
+  color: #fff;
+  font-weight: 500;
+}
+
+/* --- "Arma tu árbol": constructor visual por piezas --- */
+
+.constructor-ayuda {
+  font-size: 14px;
+  color: var(--texto-secundario);
+  margin: 0 0 8px;
+}
+
+.constructor-paleta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.constructor-paleta__grupo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.constructor-paleta__etiqueta {
+  font-size: 13px;
+  color: var(--texto-secundario);
+  min-width: 110px;
+}
+
+.pieza-paleta {
+  background: #fff;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 15px;
+  color: var(--titulo);
+  cursor: grab;
+}
+
+.pieza-paleta--atenuada {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.constructor-lienzo {
+  background: #fff;
+  border: 1px dashed var(--borde-dorado);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 10px;
+  font-size: 17px;
+  line-height: 2.2;
+  word-break: break-word;
+}
+
+.pieza-nodo {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  padding: 2px 4px;
+  margin: 2px;
+}
+
+.pieza-nodo--termino { background: #fff; }
+
+.pieza-nodo__simbolo {
+  color: var(--titulo);
+  font-weight: 500;
+  padding: 0 2px;
+}
+
+.pieza-nodo__quitar {
+  background: var(--falso-fondo);
+  border: 1px solid var(--falso-borde);
+  color: #5A2E3A;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  margin-left: 2px;
+}
+
+.pieza-slot {
+  background: #FFF6E9;
+  border: 1px dashed var(--borde-dorado);
+  border-radius: 6px;
+  min-width: 28px;
+  padding: 2px 8px;
+  margin: 2px;
+  font-size: 15px;
+  color: var(--texto-secundario);
+}
+
+.pieza-slot--seleccionada {
+  background: var(--verdadero-fondo);
+  border-color: var(--verdadero-borde);
+  color: var(--texto);
+}
+
+.pieza-slot--sobre { background: #FFF0D6; }
+
+.constructor-variable {
+  margin: 0 2px;
+  padding: 2px 4px;
+  border-radius: 6px;
+  border: 1px solid var(--borde-dorado);
+  font-size: 15px;
+  font-family: inherit;
+}
+
 /* --- Entorno --- */
 
 .fila-entorno {
@@ -493,7 +630,7 @@ select:focus-visible,
   font-family: inherit;
 }
 
-/* --- Árbol navideño (Fase 3) --- */
+/* --- Árbol navideño --- */
 
 .tarjeta-arbol {
   position: relative;
@@ -750,6 +887,162 @@ select:focus-visible,
   font-weight: 500;
   color: var(--texto-secundario);
 }
+
+/* --- Modo juego --- */
+
+.encabezado__boton-juego { margin-top: 10px; }
+
+.pantalla-juego {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
+
+.juego-barra {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.juego-banda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.juego-juguete {
+  background: #fff;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 12px;
+  padding: 10px 12px;
+  min-width: 90px;
+  text-align: center;
+}
+
+.juego-juguete__nombre { font-weight: 500; margin-bottom: 6px; }
+
+.juego-juguete__etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  min-height: 20px;
+}
+
+.juego-etiqueta {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: var(--texto-secundario);
+}
+
+.juego-pedido {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.juego-pedido__frase { font-size: 17px; margin: 0 0 8px; }
+.juego-pedido__formula { font-size: 20px; color: var(--titulo); margin: 0; }
+.juego-objetivo { font-size: 15px; color: var(--texto-secundario); margin: 8px 0 0; font-weight: 500; }
+
+.juego-decoracion {
+  background: #fff;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 13px;
+  color: var(--texto-secundario);
+}
+
+.juego-decoracion--activa {
+  background: var(--verdadero-fondo);
+  border-color: var(--verdadero-borde);
+  color: var(--texto);
+  font-weight: 500;
+}
+
+.juego-decision {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.juego-boton-decision {
+  flex: 1;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 17px;
+  border: 2px solid;
+}
+
+.juego-boton-decision--verdadero { background: var(--verdadero-fondo); border-color: var(--verdadero-borde); color: var(--texto); }
+.juego-boton-decision--falso { background: var(--falso-fondo); border-color: var(--falso-borde); color: var(--texto); }
+.juego-boton-decision:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.juego-zona-arbol {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.juego-arbol-lienzo {
+  position: relative;
+  height: 360px;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.juego-zona-resultado { margin-bottom: 14px; }
+
+.juego-mapa-seccion { margin-bottom: 24px; }
+
+.juego-mapa-zona {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 14px;
+  padding: 12px 16px;
+  margin-bottom: 12px;
+}
+
+.juego-mapa-zona--bloqueada { opacity: 0.55; }
+
+.juego-mapa-niveles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.juego-mapa-nivel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 72px;
+  height: 72px;
+  background: #fff;
+  border: 2px solid var(--borde-dorado);
+  border-radius: 50%;
+}
+
+.juego-mapa-nivel--bloqueado,
+.juego-mapa-nivel:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.juego-mapa-nivel__numero { font-weight: 600; font-size: 16px; }
+
+.juego-mapa-estrellas { display: flex; gap: 1px; }
+.juego-mapa-estrellas svg { width: 12px; height: 12px; }
 
 /* --- Accesibilidad: respeto a prefers-reduced-motion --- */
 @media (prefers-reduced-motion: reduce) {

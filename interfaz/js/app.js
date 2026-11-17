@@ -1,5 +1,5 @@
 // Orquestación de la interfaz: guarda el estado, conecta las tarjetas
-// y llama a LN.api.* en el orden que marca docs/CONTRATO.md:
+// y llama a LN.api.* en orden:
 // validarInterpretacion -> analizarFormula -> validarEntorno -> evaluar.
 
 (function () {
@@ -54,7 +54,7 @@
     var cuerpoEntorno = document.getElementById("cuerpo-entorno");
     var resultadoUI = LN.ui.resultado.crear(document.getElementById("contenedor-resultado"));
 
-    // --- Árbol navideño: referencias, estado y funciones (Fase 3) ---
+    // --- Árbol navideño: referencias, estado y funciones ---
     var tarjetaArbolEl = document.getElementById("contenedor-arbol");
     var lienzoArbol = document.getElementById("arbol-lienzo");
     var leyendaArbol = document.getElementById("leyenda-arbol");
@@ -93,7 +93,7 @@
     // Muestra, junto al nodo, su valor, la razón, las variables libres de
     // esa subfórmula (calculadas aparte con LN.arbol.freeVars) con su valor
     // en el entorno, y -si es ∀ o ∃- las ramas por elemento del dominio con
-    // el testigo o contraejemplo resaltado. Ver docs/DISENO.md.
+    // el testigo o contraejemplo resaltado.
     function mostrarGlobito(id) {
       if (!controladorArbol) return;
       var datoNodo = (estado.resultadoVigente && estado.ultimoResultado) ? estado.ultimoResultado.nodos[id] : null;
@@ -215,8 +215,8 @@
 
     // Dibuja el árbol (gris, sin valores) a partir del análisis actual de
     // la fórmula. Si la fórmula no es válida, deja el último árbol válido
-    // atenuado en vez de borrarlo (nunca se dibujan árboles a medias, ver
-    // docs/DECISIONES.md). Se llama en cada tecla mientras se escribe.
+    // atenuado en vez de borrarlo (nunca se dibujan árboles a medias).
+    // Se llama en cada tecla mientras se escribe.
     function actualizarArbol(analisis) {
       ocultarResultadoArbol();
       if (analisis && analisis.ok) {

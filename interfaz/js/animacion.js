@@ -1,6 +1,6 @@
 // Controla la cascada de iluminación del árbol ya evaluado: "Ver todo"
 // (automático, hojas -> raíz), "Repetir animación" y "Paso a paso"
-// (Anterior / Siguiente, un nodo a la vez). Ver docs/DISENO.md.
+// (Anterior / Siguiente, un nodo a la vez).
 
 (function () {
   "use strict";
@@ -43,9 +43,9 @@
     }
 
     // "avisar" solo es true cuando el paso lo pide una persona (Anterior/
-    // Siguiente): ahí sí tiene sentido mostrar el globito automáticamente
-    // (ver docs/DECISIONES.md). En la cascada automática de "Ver todo" no
-    // se muestra, porque robaría el foco del teclado cada 0.4 s.
+    // Siguiente): ahí sí tiene sentido mostrar el globito automáticamente.
+    // En la cascada automática de "Ver todo" no se muestra, porque
+    // robaría el foco del teclado cada 0.4 s.
     function pintarHasta(nuevoIndice, avisar) {
       indice = nuevoIndice;
       orden.forEach(function (id, i) {

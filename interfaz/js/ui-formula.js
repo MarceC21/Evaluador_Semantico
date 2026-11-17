@@ -1,7 +1,6 @@
 // Tarjeta 3: Fórmula.
 // Campo de texto + capa espejo (para subrayar errores) + teclado
 // simbólico + atajos de teclado + autocompletar paréntesis.
-// Ver docs/DECISIONES.md y docs/CONTRATO.md.
 
 (function () {
   "use strict";
@@ -43,6 +42,29 @@
   function crear(contenedor, estado, callbacks) {
     // callbacks: { onAnalisisCambio(resultado), onEvaluarClick() }
 
+    // --- Interruptor de modo: "Escribir" (teclado + texto) o
+    // "Arma tu árbol" (constructor visual de piezas, aporte creativo).
+    // Ambos modos terminan llenando el mismo campo de texto, así que
+    // todo lo de abajo (análisis en vivo, errores, árbol de la derecha)
+    // no necesita saber cuál se está usando.
+    var modo = "texto";
+
+    var selectorModo = document.createElement("div");
+    selectorModo.className = "selector-modo-formula";
+    selectorModo.setAttribute("role", "group");
+    selectorModo.setAttribute("aria-label", "Cómo ingresar la fórmula");
+    var botonModoTexto = document.createElement("button");
+    botonModoTexto.type = "button";
+    botonModoTexto.className = "boton-modo";
+    botonModoTexto.textContent = "Escribir";
+    var botonModoConstructor = document.createElement("button");
+    botonModoConstructor.type = "button";
+    botonModoConstructor.className = "boton-modo";
+    botonModoConstructor.textContent = "Arma tu árbol";
+    selectorModo.appendChild(botonModoTexto);
+    selectorModo.appendChild(botonModoConstructor);
+    contenedor.appendChild(selectorModo);
+
     var teclado = document.createElement("div");
     teclado.className = "teclado-simbolico";
     contenedor.appendChild(teclado);
@@ -59,6 +81,29 @@
     envoltura.appendChild(capaEspejo);
     envoltura.appendChild(campo);
     contenedor.appendChild(envoltura);
+
+    var contenedorConstructor = document.createElement("div");
+    contenedorConstructor.className = "constructor-formula";
+    contenedor.appendChild(contenedorConstructor);
+    var controladorConstructor = LN.ui.constructorFormula.crear(contenedorConstructor, estado, {
+      onCambio: function (texto) {
+        campo.value = texto || "";
+        manejarCambio();
+      }
+    });
+
+    function actualizarModo() {
+      teclado.classList.toggle("oculto", modo !== "texto");
+      envoltura.classList.toggle("oculto", modo !== "texto");
+      contenedorConstructor.classList.toggle("oculto", modo !== "constructor");
+      botonModoTexto.classList.toggle("boton-modo--activo", modo === "texto");
+      botonModoConstructor.classList.toggle("boton-modo--activo", modo === "constructor");
+      botonModoTexto.setAttribute("aria-pressed", modo === "texto" ? "true" : "false");
+      botonModoConstructor.setAttribute("aria-pressed", modo === "constructor" ? "true" : "false");
+    }
+    botonModoTexto.addEventListener("click", function () { modo = "texto"; actualizarModo(); });
+    botonModoConstructor.addEventListener("click", function () { modo = "constructor"; actualizarModo(); });
+    actualizarModo();
 
     var mensajeError = document.createElement("div");
     mensajeError.className = "mensaje-error oculto";
@@ -193,6 +238,7 @@
       renderTeclado();
       campo.value = estado.formulaTexto || "";
       manejarCambio();
+      controladorConstructor.render();
     }
 
     render();
