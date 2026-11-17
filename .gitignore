@@ -1,3 +1,5 @@
 # Documentos de trabajo: se quedan solo en mi disco, no se suben al repo compartido
 CLAUDE.md
-docs/
+docs/*
+# excepcion: la bitacora de progreso si se sube, para retomar el trabajo
+!docs/PROGRESO.md
