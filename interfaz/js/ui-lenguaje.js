@@ -48,7 +48,7 @@
   }
 
   function crearFilaAgregar(opciones) {
-    // opciones: { placeholderNombre, pedirAridad, aridadMinima, alAgregar }
+    // opciones: { etiqueta, placeholderNombre, pedirAridad, aridadMinima, alAgregar }
     var fila = document.createElement("div");
     fila.className = "fila-agregar";
 
@@ -80,15 +80,21 @@
 
     function intentar() {
       var nombre = inputNombre.value.trim();
-      mensaje.classList.add("oculto");
+      mensaje.className = "mensaje-error oculto"; // por si el intento anterior quedó como aviso de éxito
+
+      if (!nombre) {
+        mensaje.textContent = "Escribe un nombre antes de presionar Agregar.";
+        mensaje.classList.remove("oculto");
+        return;
+      }
       if (!/^[A-Za-zÁÉÍÓÚÑáéíóúñ][A-Za-z0-9ÁÉÍÓÚÑáéíóúñ_]*$/.test(nombre)) {
-        mensaje.textContent = "El nombre debe empezar con una letra y no tener espacios.";
+        mensaje.textContent = "«" + nombre + "» no es un nombre válido: debe empezar con una letra y no tener espacios ni símbolos.";
         mensaje.classList.remove("oculto");
         return;
       }
       var aridad = opciones.pedirAridad ? parseInt(inputAridad.value, 10) : 0;
       if (opciones.pedirAridad && (isNaN(aridad) || aridad < opciones.aridadMinima)) {
-        mensaje.textContent = "La aridad debe ser un número válido.";
+        mensaje.textContent = "La aridad de «" + nombre + "» debe ser un número entero de " + opciones.aridadMinima + " o más.";
         mensaje.classList.remove("oculto");
         return;
       }
@@ -98,6 +104,13 @@
         mensaje.classList.remove("oculto");
         return;
       }
+
+      // Confirmación clara de qué se agregó (en vez de dejar la fila en
+      // silencio): se ve en un tono neutro, no de error.
+      mensaje.textContent = "Se agregó " + opciones.etiqueta + " «" + nombre + "»" +
+        (opciones.pedirAridad ? " (aridad " + aridad + ")" : "") + ".";
+      mensaje.className = "aviso";
+
       inputNombre.value = "";
       if (inputAridad) inputAridad.value = String(opciones.aridadMinima);
       inputNombre.focus();
@@ -125,6 +138,7 @@
         }));
       });
       contenedor.appendChild(crearFilaAgregar({
+        etiqueta: "la constante",
         placeholderNombre: "Nueva constante (ej. k)",
         pedirAridad: false,
         alAgregar: function (nombre) {
@@ -144,6 +158,7 @@
         }));
       });
       contenedor.appendChild(crearFilaAgregar({
+        etiqueta: "la función",
         placeholderNombre: "Nueva función (ej. f)",
         pedirAridad: true,
         aridadMinima: 1,
@@ -164,6 +179,7 @@
         }));
       });
       contenedor.appendChild(crearFilaAgregar({
+        etiqueta: "el predicado",
         placeholderNombre: "Nuevo predicado (ej. P)",
         pedirAridad: true,
         aridadMinima: 1,

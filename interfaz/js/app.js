@@ -242,6 +242,7 @@
     });
 
     function onLenguajeCambio() {
+      controladorLenguaje.render(); // faltaba: por eso + y − no se veían hacer nada
       sincronizarInterpretacionConLenguaje();
       controladorInterpretacion.render();
       controladorFormula.render(); // reconstruye el teclado y reanaliza la fórmula
