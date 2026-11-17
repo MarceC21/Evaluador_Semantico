@@ -49,8 +49,13 @@
 
   function crearFilaAgregar(opciones) {
     // opciones: { etiqueta, placeholderNombre, pedirAridad, aridadMinima, alAgregar }
+    // "envoltura" no es flex: así el mensaje (de error o de éxito) siempre
+    // queda en su propia línea, debajo, sin angostar el campo de texto.
+    var envoltura = document.createElement("div");
+
     var fila = document.createElement("div");
     fila.className = "fila-agregar";
+    envoltura.appendChild(fila);
 
     var inputNombre = document.createElement("input");
     inputNombre.type = "text";
@@ -76,7 +81,7 @@
 
     var mensaje = document.createElement("div");
     mensaje.className = "mensaje-error oculto";
-    fila.appendChild(mensaje);
+    envoltura.appendChild(mensaje);
 
     function intentar() {
       var nombre = inputNombre.value.trim();
@@ -121,7 +126,7 @@
       if (ev.key === "Enter") { ev.preventDefault(); intentar(); }
     });
 
-    return fila;
+    return envoltura;
   }
 
   function crear(contenedor, estado, onCambio) {

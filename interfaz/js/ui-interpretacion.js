@@ -191,8 +191,10 @@
         inputDominio.value = "";
       });
       filaAgregarDominio.appendChild(botonAgregarDominio);
-      filaAgregarDominio.appendChild(mensajeDominio);
       contenedor.appendChild(filaAgregarDominio);
+      // mensajeDominio queda fuera de la fila (que es flex), como hermano
+      // debajo: así el aviso nunca angosta el campo de texto.
+      contenedor.appendChild(mensajeDominio);
 
       if (interpretacion.dominio.length === 0) {
         var avisoVacio = document.createElement("div");
