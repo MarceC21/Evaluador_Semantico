@@ -307,22 +307,40 @@
       aplicarTransform();
     }
 
-    var arrastrando = false, ultimoX = 0, ultimoY = 0;
+    // "listo" = el puntero está abajo, pero todavía no se movió lo
+    // suficiente para contar como arrastre. Importante: NO se llama a
+    // setPointerCapture hasta que el movimiento pasa el umbral, porque
+    // capturar el puntero desde el primer pixel redirige también el
+    // clic (y el Enter por teclado no se ve afectado, pero un clic
+    // normal en un nodo nunca llegaba a abrir el globito: se lo
+    // quedaba el contenedor). Así, un clic corto sigue siendo un clic.
+    var UMBRAL_ARRASTRE = 4;
+    var listo = false, arrastrando = false, ultimoX = 0, ultimoY = 0;
     contenedor.style.cursor = "grab";
     function iniciarArrastre(ev) {
-      arrastrando = true; ultimoX = ev.clientX; ultimoY = ev.clientY;
-      contenedor.style.cursor = "grabbing";
-      try { contenedor.setPointerCapture(ev.pointerId); } catch (e) { /* no disponible */ }
+      listo = true; arrastrando = false;
+      ultimoX = ev.clientX; ultimoY = ev.clientY;
     }
     function moverArrastre(ev) {
-      if (!arrastrando) return;
-      tx += ev.clientX - ultimoX; ty += ev.clientY - ultimoY;
+      if (!listo) return;
+      var dx = ev.clientX - ultimoX, dy = ev.clientY - ultimoY;
+      if (!arrastrando) {
+        if (Math.abs(dx) < UMBRAL_ARRASTRE && Math.abs(dy) < UMBRAL_ARRASTRE) return;
+        arrastrando = true;
+        contenedor.style.cursor = "grabbing";
+        try { contenedor.setPointerCapture(ev.pointerId); } catch (e) { /* no disponible */ }
+      }
+      tx += dx; ty += dy;
       ultimoX = ev.clientX; ultimoY = ev.clientY;
       aplicarTransform();
     }
     function soltarArrastre(ev) {
-      arrastrando = false; contenedor.style.cursor = "grab";
-      try { contenedor.releasePointerCapture(ev.pointerId); } catch (e) { /* no disponible */ }
+      listo = false;
+      if (arrastrando) {
+        arrastrando = false;
+        contenedor.style.cursor = "grab";
+        try { contenedor.releasePointerCapture(ev.pointerId); } catch (e) { /* no disponible */ }
+      }
     }
     contenedor.addEventListener("pointerdown", iniciarArrastre);
     contenedor.addEventListener("pointermove", moverArrastre);
