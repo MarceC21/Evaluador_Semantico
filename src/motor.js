@@ -22,3 +22,29 @@ export function prepararEvaluacion(texto, lenguaje, interpretacion, entorno) {
     advertencias: [...modelo.advertencias, ...asignacion.advertencias],
   };
 }
+
+function evaluarTermino(termino, interpretacion, entorno) {
+  if (termino.tipo === "var") {
+    return entorno[termino.nombre];
+  }
+
+  if (termino.tipo === "func") {
+    const tabla = interpretacion.funciones[termino.nombre];
+
+    const argumentos = termino.args.map((arg) =>
+      evaluarTermino(arg, interpretacion, entorno)
+    );
+
+    const fila = tabla.find(
+      (entrada) =>
+        entrada.args.length === argumentos.length &&
+        entrada.args.every(
+          (valor, indice) => valor === argumentos[indice]
+        )
+    );
+
+    return fila.valor;
+  }
+
+  throw new Error(`Tipo de término no soportado: ${termino.tipo}`);
+}
