@@ -48,3 +48,71 @@ function evaluarTermino(termino, interpretacion, entorno) {
 
   throw new Error(`Tipo de término no soportado: ${termino.tipo}`);
 }
+
+function evaluarPredicado(nodo, interpretacion, entorno) {
+  const relacion = interpretacion.predicados[nodo.nombre];
+
+  const argumentos = nodo.args.map((arg) =>
+    evaluarTermino(arg, interpretacion, entorno)
+  );
+
+  return relacion.some(
+    (tupla) =>
+      tupla.length === argumentos.length &&
+      tupla.every(
+        (valor, indice) => valor === argumentos[indice]
+      )
+  );
+}
+
+function evaluarIgualdad(nodo, interpretacion, entorno) {
+  const izquierda = evaluarTermino(
+    nodo.izq,
+    interpretacion,
+    entorno
+  );
+
+  const derecha = evaluarTermino(
+    nodo.der,
+    interpretacion,
+    entorno
+  );
+
+  return izquierda === derecha;
+}
+
+function evaluarNodo(nodo, interpretacion, entorno) {
+  if (nodo.tipo === 'pred') {
+    return evaluarPredicado(
+      nodo,
+      interpretacion,
+      entorno
+    );
+  }
+
+  if (nodo.tipo === 'igual') {
+    return evaluarIgualdad(
+      nodo,
+      interpretacion,
+      entorno
+    );
+  }
+
+  throw new Error(
+    `Tipo de nodo no soportado todavía: ${nodo.tipo}`
+  );
+}
+
+export function evaluar(ast, interpretacion, entorno = {}) {
+  const valor = evaluarNodo(
+    ast,
+    interpretacion,
+    entorno
+  );
+
+  return {
+    ok: true,
+    valor,
+    raiz: ast.id,
+  };
+}
