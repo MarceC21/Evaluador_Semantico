@@ -20,14 +20,10 @@
 
   // --- Texto que se ve dentro de cada nodo -------------------------------
 
-  function textoTermino(t) {
-    if (t.tipo === "var") return t.nombre;
-    return t.nombre + (t.args.length ? "(" + t.args.map(textoTermino).join(", ") + ")" : "");
-  }
-
   function textoNodo(nodo) {
     switch (nodo.tipo) {
-      case "pred": return nodo.nombre + (nodo.args.length ? "(" + nodo.args.map(textoTermino).join(", ") + ")" : "");
+      case "pred": case "func": case "var": return nodo.nombre;
+      case "igual": return "=";
       case "no": return "¬";
       case "y": return "∧";
       case "o": return "∨";
@@ -42,35 +38,31 @@
   // Se calculan aparte en la interfaz, recorriendo solo esa subfórmula
   // (ver docs/DISENO.md, "Clic en un nodo").
 
-  function variablesTermino(t, acum) {
-    if (t.tipo === "var") { acum[t.nombre] = true; return; }
-    t.args.forEach(function (a) { variablesTermino(a, acum); });
-  }
-
   function freeVars(nodo) {
-    var acum = {};
-    (function recorrer(n) {
-      switch (n.tipo) {
-        case "pred": n.args.forEach(function (a) { variablesTermino(a, acum); }); break;
-        case "no": recorrer(n.hijo); break;
-        case "y": case "o": case "implica": recorrer(n.izq); recorrer(n.der); break;
-        case "paraTodo": case "existe":
-          recorrer(n.cuerpo);
-          delete acum[n.variable];
-          break;
+    var acum = new Set();
+    (function recorrer(n, ligadas) {
+      if (n.tipo === "var") {
+        if (!ligadas.has(n.nombre)) acum.add(n.nombre);
+        return;
       }
-    })(nodo);
-    return Object.keys(acum);
+      if (n.tipo === "paraTodo" || n.tipo === "existe") {
+        ligadas = new Set(ligadas);
+        ligadas.add(n.variable);
+      }
+      hijosDe(n).forEach(function (h) { recorrer(h, ligadas); });
+    })(nodo, new Set());
+    return Array.from(acum);
   }
 
   // --- Layout del árbol ---------------------------------------------------
 
   function hijosDe(nodo) {
     switch (nodo.tipo) {
+      case "pred": case "func": return nodo.args;
       case "no": return [nodo.hijo];
-      case "y": case "o": case "implica": return [nodo.izq, nodo.der];
+      case "igual": case "y": case "o": case "implica": return [nodo.izq, nodo.der];
       case "paraTodo": case "existe": return [nodo.cuerpo];
-      default: return []; // "pred": hoja
+      default: return []; // Las variables son hojas; también los símbolos de aridad cero.
     }
   }
 
@@ -203,10 +195,11 @@
     Object.keys(layout.info).forEach(function (idStr) {
       var id = Number(idStr);
       var it = layout.info[id];
+      var esTermino = it.nodo.tipo === "var" || it.nodo.tipo === "func";
       var g = svgEl("g", {
         class: "nodo nodo--sin-evaluar", transform: "translate(" + it.x + "," + it.y + ")",
         tabindex: "0", role: "button",
-        "aria-label": "Nodo " + it.texto + ", sin evaluar todavía."
+        "aria-label": "Nodo " + it.texto + (esTermino ? ", término." : ", sin evaluar todavía.")
       });
       var halo = svgEl("circle", { r: it.radio + 9, class: "nodo__halo" });
       var cuerpo = svgEl("circle", { r: it.radio, class: "nodo__cuerpo" });
@@ -252,15 +245,29 @@
 
     // --- Pintar valores (gris / verdadero / falso) -------------------------
 
+    function pintarTermino(id, encendido) {
+      var nel = nodosElementos[id];
+      if (!nel) return;
+      nel.grupo.classList.remove("nodo--sin-evaluar", "nodo--termino-iluminado");
+      nel.grupo.classList.add(encendido ? "nodo--termino-iluminado" : "nodo--sin-evaluar");
+      nel.marca.textContent = "";
+      nel.grupo.setAttribute("aria-label", "Nodo " + nel.info.texto + ", término" +
+        (encendido ? " iluminado" : "") + ". Presiona Enter para ver el detalle.");
+    }
+
     function pintarNodo(id, valor) {
       var nel = nodosElementos[id];
       if (!nel) return;
+      if (nel.info.nodo.tipo === "var" || nel.info.nodo.tipo === "func") {
+        pintarTermino(id, valor !== null && typeof valor !== "undefined");
+        return;
+      }
       nel.grupo.classList.remove("nodo--sin-evaluar", "nodo--verdadero", "nodo--falso");
       var estadoTxt;
       if (valor === null || typeof valor === "undefined") {
         nel.grupo.classList.add("nodo--sin-evaluar");
         nel.marca.textContent = "";
-        estadoTxt = "sin evaluar todavía";
+        estadoTxt = nel.info.nodo.tipo === "var" || nel.info.nodo.tipo === "func" ? "término" : "sin evaluar todavía";
       } else {
         nel.grupo.classList.add(valor ? "nodo--verdadero" : "nodo--falso");
         nel.marca.textContent = valor ? "✓" : "✕";
@@ -353,6 +360,7 @@
     return {
       layout: layout,
       pintarNodo: pintarNodo,
+      pintarTermino: pintarTermino,
       resetearColores: resetearColores,
       resaltar: resaltar,
       quitarResaltados: quitarResaltados,

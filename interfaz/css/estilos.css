@@ -591,6 +591,10 @@ select:focus-visible,
 .nodo--falso .nodo__halo { fill: var(--falso-fondo); opacity: 0.35; }
 .nodo--falso .nodo__marca { fill: var(--falso-borde); }
 
+.nodo--termino-iluminado .nodo__cuerpo { fill: #fff0ba; stroke: #96702c; stroke-width: 1.5px; }
+.nodo--termino-iluminado .nodo__halo { fill: #fff0ba; opacity: 0.5; }
+.nodo--termino-iluminado .nodo__reflejo { opacity: 0.6; }
+
 .nodo--actual .nodo__cuerpo { stroke: var(--titulo); stroke-width: 3px; }
 
 .arista { stroke: #D8B8C2; stroke-width: 2px; }
@@ -646,6 +650,7 @@ select:focus-visible,
   font-weight: 700;
 }
 
+.leyenda-arbol__muestra--termino { background: #fff0ba; border: 1.5px solid #96702c; }
 .leyenda-arbol__muestra--verdadero { background: var(--verdadero-fondo); border: 1.5px solid var(--verdadero-borde); color: var(--verdadero-borde); }
 .leyenda-arbol__muestra--falso { background: var(--falso-fondo); border: 1.5px solid var(--falso-borde); color: var(--falso-borde); }
 

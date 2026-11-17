@@ -102,6 +102,22 @@
       var cuerpo = g.querySelector(".globito-nodo__cuerpo");
       cuerpo.textContent = "";
 
+      var astNodo = controladorArbol.nodoAst(id);
+      if (astNodo.tipo === "var" || astNodo.tipo === "func") {
+        var detalleTermino = document.createElement("p");
+        detalleTermino.className = "globito-nodo__razon";
+        detalleTermino.textContent = astNodo.tipo === "var"
+          ? "Variable «" + astNodo.nombre + "». Es una hoja del árbol."
+          : astNodo.args.length
+            ? "Función «" + astNodo.nombre + "». Sus hijos son sus argumentos."
+            : "Constante «" + astNodo.nombre + "». Es una hoja del árbol.";
+        var notaTermino = document.createElement("p");
+        notaTermino.textContent = "Los términos representan elementos del dominio; el valor verdadero o falso corresponde a las fórmulas.";
+        cuerpo.appendChild(detalleTermino);
+        cuerpo.appendChild(notaTermino);
+        return mostrarGlobitoEn(g, id);
+      }
+
       // Clic en un nodo del árbol todavía gris (antes de Evaluar, o
       // después de cambiar algo que dejó el resultado desactualizado):
       // se abre igual el globito, para que el clic siempre haga algo
@@ -114,7 +130,6 @@
         return mostrarGlobitoEn(g, id);
       }
 
-      var astNodo = controladorArbol.nodoAst(id);
       var libres = LN.arbol.freeVars(astNodo);
 
       var valor = document.createElement("div");

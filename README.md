@@ -1,8 +1,8 @@
 # Evaluador semántico de lógica de primer orden · MM3032
 
-Entrega del Integrante 1: parser, validaciones y creación del árbol sintáctico.
-La página permite probar estos módulos. El motor que calcula valores de verdad
-y explica testigos o contraejemplos queda pendiente de implementación.
+Interfaz Lógica Navideña conectada al parser, las validaciones y el motor
+semántico real de `src/`. Calcula valores de verdad y explica testigos y
+contraejemplos.
 
 ## Ejecutar la página
 
@@ -12,21 +12,21 @@ Desde la carpeta `Evaluador_Semantico`:
 python3 -m http.server 8000
 ```
 
-Abre http://localhost:8000. Detén el servidor con `Ctrl+C`.
-Los módulos ES necesitan servirse por HTTP: no abras `index.html` con doble clic.
-No hay dependencias que instalar ni paso de compilación.
+Abre http://localhost:8000: la página principal redirige a la interfaz de
+**Lógica Navideña**, disponible también en http://localhost:8000/interfaz/.
+Detén el servidor con `Ctrl+C`.
 
-1. Edita la fórmula y el lenguaje, o utiliza el ejemplo precargado.
-2. Pulsa **Analizar fórmula y crear árbol** para comprobar solo la fórmula.
-3. Pulsa **Validar todas las entradas** para comprobar también interpretación y entorno.
-4. Inspecciona ids, posiciones, variables libres, ligadores y alcance en el árbol
-   o en la salida JSON desplegable.
+Sirve la carpeta `Evaluador_Semantico` completa, porque la interfaz importa
+los módulos de `src/`. Los módulos ES necesitan HTTP: no abras `index.html`
+con doble clic. No hay dependencias que instalar ni paso de compilación.
+La lógica se ejecuta en el navegador; no requiere un servidor de backend aparte.
 
-Los campos de lenguaje, interpretación y entorno utilizan JSON con comillas dobles.
-El dominio utiliza etiquetas de texto no vacías: `"1"`, `"a"` o `"a b"`.
-Un ejemplo abierto es `P(x) ∧ ∀x P(x)`, con entorno `{"x":"a"}`.
-Una entrada incorrecta muestra errores y elimina cualquier resultado anterior.
-La validación completa todavía no calcula verdadero/falso.
+1. Carga un ejemplo o configura el lenguaje, la interpretación y la fórmula.
+2. Completa el entorno si la fórmula tiene variables libres.
+3. Pulsa **Evaluar** para ver el valor de verdad y explorar el árbol y sus explicaciones.
+
+`interfaz/js/api.js` tiene `LN.USAR_MOCK = false`: utiliza las funciones
+reales importadas por `interfaz/js/real.js`.
 
 ## Pruebas
 
@@ -46,6 +46,12 @@ Evaluador_Semantico/
   index.html
   package.json
   README.md
+  interfaz/           # Interfaz principal: Lógica Navideña
+    index.html
+    js/
+    css/
+    assets/
+    mock/
   src/
     tipos.js
     utils.js

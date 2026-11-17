@@ -17,7 +17,23 @@
   // callbacks: { onPaso(idNodoActual) } se llama cada vez que cambia el paso actual.
   function crear(handleArbol, resultado, callbacks) {
     callbacks = callbacks || {};
-    var orden = resultado.orden;
+    // El motor ordena las fórmulas; el dibujo también contiene términos.
+    // Insertamos cada término antes de la fórmula que lo utiliza, recorriendo
+    // primero sus argumentos, sin modificar el resultado semántico.
+    var orden = [];
+    var terminos = new Set();
+    function agregarTermino(id) {
+      var info = handleArbol.layout.info[id];
+      if (info.nodo.tipo !== "var" && info.nodo.tipo !== "func") return;
+      if (terminos.has(id)) return;
+      info.hijosIds.forEach(agregarTermino);
+      terminos.add(id);
+      orden.push(id);
+    }
+    resultado.orden.forEach(function (id) {
+      handleArbol.layout.info[id].hijosIds.forEach(agregarTermino);
+      orden.push(id);
+    });
     var indice = -1;
     var temporizadores = [];
 
@@ -33,7 +49,8 @@
     function pintarHasta(nuevoIndice, avisar) {
       indice = nuevoIndice;
       orden.forEach(function (id, i) {
-        if (i <= indice) handleArbol.pintarNodo(id, resultado.nodos[id].valor);
+        if (terminos.has(id)) handleArbol.pintarTermino(id, i <= indice);
+        else if (i <= indice) handleArbol.pintarNodo(id, resultado.nodos[id].valor);
         else handleArbol.pintarNodo(id, null);
       });
       if (indice >= 0) handleArbol.resaltar(orden[indice]);
