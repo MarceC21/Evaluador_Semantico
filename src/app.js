@@ -1,5 +1,5 @@
 import { analizarFormula, formatear } from './parser.js';
-import { prepararEvaluacion } from './motor.js';
+import { prepararEvaluacion, evaluarFormula} from './motor.js';
 import { dibujarArbol } from './arbol.js';
 
 const $ = id => document.getElementById(id);
@@ -79,8 +79,110 @@ function analizar(completa) {
   }
 }
 
+function evaluarSemantica() {
+  limpiarSalida();
+
+  try {
+    const lenguaje = leerJSON(
+      'lenguaje',
+      'Lenguaje'
+    );
+
+    const interpretacion = leerJSON(
+      'interpretacion',
+      'Interpretación'
+    );
+
+    const entorno = leerJSON(
+      'entorno',
+      'Entorno'
+    );
+
+    const texto = $('formula').value;
+
+    const resultado = evaluarFormula(
+      texto,
+      lenguaje,
+      interpretacion,
+      entorno
+    );
+
+    mostrarEvaluacion(resultado);
+  } catch (error) {
+    limpiarSalida();
+
+    $('estado').className = 'error';
+
+    $('estado').textContent =
+      error instanceof RangeError
+        ? 'La entrada excede la complejidad que admite esta versión.'
+        : error.message;
+  }
+}
+
+function mostrarEvaluacion(resultado) {
+  $('json').textContent =
+    JSON.stringify(resultado, null, 2);
+
+  if (!resultado.ok) {
+    $('estado').className = 'error';
+
+    $('estado').textContent =
+      `Entrada inválida${
+        resultado.etapa
+          ? `: ${resultado.etapa}`
+          : ''
+      }.`;
+
+    for (const error of resultado.errores) {
+      const item =
+        document.createElement('li');
+
+      const donde =
+        error.posicion !== undefined
+          ? `posición ${error.posicion}`
+          : error.donde;
+
+      item.textContent =
+        `${error.codigo}${
+          donde ? ` (${donde})` : ''
+        }: ${error.mensaje}`;
+
+      $('errores').append(item);
+    }
+
+    return;
+  }
+
+  $('estado').className =
+    resultado.valor
+      ? 'exito'
+      : 'error';
+
+  $('estado').textContent =
+    resultado.valor
+      ? 'Verdadero ✓'
+      : 'Falso ✕';
+
+  $('lectura').textContent =
+    formatear(resultado.ast);
+
+  $('variables').textContent =
+    `Libres: ${
+      resultado.libres.join(', ') || 'ninguna'
+    } · Ligadas: ${
+      resultado.ligadas.join(', ') || 'ninguna'
+    }`;
+
+  dibujarArbol(
+    resultado.ast,
+    $('arbol')
+  );
+}
+
 $('analizar').addEventListener('click', () => analizar(false));
 $('validar').addEventListener('click', () => analizar(true));
+$('evaluar').addEventListener('click', evaluarSemantica);
 $('ejemplo').addEventListener('click', cargarEjemplo);
 for (const boton of document.querySelectorAll('[data-simbolo]')) {
   boton.addEventListener('click', () => {
