@@ -475,6 +475,144 @@ select:focus-visible,
   cursor: not-allowed;
 }
 
+/* --- Selector de modo: "Escribir" / "Arma tu árbol" --- */
+
+.selector-modo-formula {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.boton-modo {
+  flex: 1;
+  background: #fff;
+  color: var(--texto-secundario);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 15px;
+}
+
+.boton-modo--activo {
+  background: var(--titulo);
+  color: #fff;
+  font-weight: 500;
+}
+
+/* --- "Arma tu árbol": constructor visual por piezas --- */
+
+.constructor-ayuda {
+  font-size: 14px;
+  color: var(--texto-secundario);
+  margin: 0 0 8px;
+}
+
+.constructor-paleta {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.constructor-paleta__grupo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.constructor-paleta__etiqueta {
+  font-size: 13px;
+  color: var(--texto-secundario);
+  min-width: 110px;
+}
+
+.pieza-paleta {
+  background: #fff;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 15px;
+  color: var(--titulo);
+  cursor: grab;
+}
+
+.pieza-paleta--atenuada {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.constructor-lienzo {
+  background: #fff;
+  border: 1px dashed var(--borde-dorado);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 10px;
+  font-size: 17px;
+  line-height: 2.2;
+  word-break: break-word;
+}
+
+.pieza-nodo {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  padding: 2px 4px;
+  margin: 2px;
+}
+
+.pieza-nodo--termino { background: #fff; }
+
+.pieza-nodo__simbolo {
+  color: var(--titulo);
+  font-weight: 500;
+  padding: 0 2px;
+}
+
+.pieza-nodo__quitar {
+  background: var(--falso-fondo);
+  border: 1px solid var(--falso-borde);
+  color: #5A2E3A;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+  margin-left: 2px;
+}
+
+.pieza-slot {
+  background: #FFF6E9;
+  border: 1px dashed var(--borde-dorado);
+  border-radius: 6px;
+  min-width: 28px;
+  padding: 2px 8px;
+  margin: 2px;
+  font-size: 15px;
+  color: var(--texto-secundario);
+}
+
+.pieza-slot--seleccionada {
+  background: var(--verdadero-fondo);
+  border-color: var(--verdadero-borde);
+  color: var(--texto);
+}
+
+.pieza-slot--sobre { background: #FFF0D6; }
+
+.constructor-variable {
+  margin: 0 2px;
+  padding: 2px 4px;
+  border-radius: 6px;
+  border: 1px solid var(--borde-dorado);
+  font-size: 15px;
+  font-family: inherit;
+}
+
 /* --- Entorno --- */
 
 .fila-entorno {
