@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lógica Navideña — Evaluador semántico</title>
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <h1 class="encabezado__titulo">Lógica Navideña</h1>
+    <p class="encabezado__subtitulo">Evaluador semántico</p>
+    <p class="encabezado__curso">MM3032 · Lógica Matemática</p>
+  </header>
+
+  <nav class="menu-ejemplos" id="menu-ejemplos" aria-label="Cargar ejemplo"></nav>
+
+  <main class="app">
+    <section class="columna-izquierda" aria-label="Datos de entrada">
+
+      <!-- Tarjeta 1: Lenguaje -->
+      <div class="tarjeta" data-colapsada="false">
+        <button type="button" class="tarjeta__encabezado" aria-expanded="true" aria-controls="cuerpo-lenguaje">
+          <span class="tarjeta__titulo"><span class="tarjeta__numero">1</span> Lenguaje</span>
+          <span class="tarjeta__colapsar" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="tarjeta__cuerpo" id="cuerpo-lenguaje"></div>
+      </div>
+
+      <!-- Tarjeta 2: Interpretación -->
+      <div class="tarjeta" data-colapsada="false">
+        <button type="button" class="tarjeta__encabezado" aria-expanded="true" aria-controls="cuerpo-interpretacion">
+          <span class="tarjeta__titulo"><span class="tarjeta__numero">2</span> Interpretación</span>
+          <span class="tarjeta__colapsar" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="tarjeta__cuerpo" id="cuerpo-interpretacion"></div>
+      </div>
+
+      <!-- Tarjeta 3: Fórmula -->
+      <div class="tarjeta" data-colapsada="false">
+        <button type="button" class="tarjeta__encabezado" aria-expanded="true" aria-controls="cuerpo-formula">
+          <span class="tarjeta__titulo"><span class="tarjeta__numero">3</span> Fórmula</span>
+          <span class="tarjeta__colapsar" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="tarjeta__cuerpo" id="cuerpo-formula"></div>
+      </div>
+
+      <!-- Tarjeta 4: Entorno (solo aparece si hay variables libres) -->
+      <div class="tarjeta oculto" data-colapsada="false" id="tarjeta-entorno">
+        <button type="button" class="tarjeta__encabezado" aria-expanded="true" aria-controls="cuerpo-entorno">
+          <span class="tarjeta__titulo"><span class="tarjeta__numero">4</span> Entorno</span>
+          <span class="tarjeta__colapsar" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="tarjeta__cuerpo" id="cuerpo-entorno"></div>
+      </div>
+
+    </section>
+
+    <section class="columna-derecha" aria-label="Árbol y resultado">
+      <div class="tarjeta tarjeta-arbol" id="contenedor-arbol">
+        <p>El árbol navideño aparecerá aquí en la próxima fase.</p>
+      </div>
+
+      <div class="tarjeta">
+        <h2>Resultado</h2>
+        <div id="contenedor-resultado"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Motor mock (TEMPORAL) y casos de ejemplo -->
+  <script src="mock/motor-mock.js"></script>
+  <script src="mock/casos/casos.js"></script>
+
+  <!-- Interfaz -->
+  <script src="js/api.js"></script>
+  <script src="js/ui-lenguaje.js"></script>
+  <script src="js/ui-interpretacion.js"></script>
+  <script src="js/ui-formula.js"></script>
+  <script src="js/ui-resultado.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

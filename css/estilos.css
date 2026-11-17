@@ -1,0 +1,563 @@
+/* ======================================================================
+   Lógica Navideña — hoja de estilos
+   Paleta y tipografía según docs/DISENO.md.
+   ====================================================================== */
+
+/* Fuentes locales con @font-face. Los archivos reales (.woff2) todavía no
+   llegan de descarga; mientras tanto el navegador usa el fallback
+   (cursive / sans-serif). Cuando se tengan los archivos, basta con
+   colocarlos en assets/fonts/ con estos mismos nombres. */
+@font-face {
+  font-family: "Pinyon Script";
+  src: url("../assets/fonts/PinyonScript-Regular.woff2") format("woff2");
+  font-display: swap;
+}
+@font-face {
+  font-family: "Quicksand";
+  src: url("../assets/fonts/Quicksand-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Quicksand";
+  src: url("../assets/fonts/Quicksand-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-display: swap;
+}
+
+:root {
+  --fondo-tarjeta: #FCE7EE;
+  --borde-dorado: #E3C27A;
+  --titulo: #9C4A63;
+  --subtitulo: #B77A8C;
+  --texto: #5A2E3A;
+  --texto-secundario: #7A5560;
+  --verdadero-fondo: #F7D774;
+  --verdadero-borde: #C9962B;
+  --falso-fondo: #F08CA4;
+  --falso-borde: #C2476A;
+  --sin-evaluar: #EBDDE1;
+  --casquillo: #B8964A;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: #F6EDEF;
+  color: var(--texto);
+  font-family: "Quicksand", sans-serif;
+  font-size: 16px;
+  line-height: 1.45;
+}
+
+h1, h2, h3 { margin: 0 0 0.5em 0; color: var(--titulo); }
+
+button {
+  font-family: inherit;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+[tabindex]:focus-visible {
+  outline: 3px solid #5A2E3A;
+  outline-offset: 2px;
+}
+
+/* --- Encabezado --- */
+
+.encabezado {
+  text-align: center;
+  padding: 20px 12px 10px;
+}
+
+.encabezado__titulo {
+  font-family: "Pinyon Script", cursive;
+  font-size: 32px;
+  color: var(--titulo);
+  margin: 0;
+}
+
+.encabezado__subtitulo {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: var(--subtitulo);
+  text-transform: uppercase;
+  margin: 2px 0 0;
+}
+
+.encabezado__curso {
+  font-size: 13px;
+  color: var(--texto-secundario);
+  margin: 2px 0 0;
+}
+
+/* --- Layout principal: dos columnas --- */
+
+.app {
+  display: flex;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+  align-items: flex-start;
+}
+
+.columna-izquierda {
+  flex: 0 0 40%;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.columna-derecha {
+  flex: 1;
+  position: sticky;
+  top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .app { flex-direction: column; }
+  .columna-izquierda, .columna-derecha { flex: 1 1 auto; width: 100%; }
+  .columna-derecha { position: static; }
+}
+
+/* --- Tarjetas --- */
+
+.tarjeta {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 16px;
+  padding: 16px 18px;
+}
+
+.tarjeta__encabezado {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  color: inherit;
+  font: inherit;
+}
+
+.tarjeta__titulo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--titulo);
+}
+
+.tarjeta__numero {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--borde-dorado);
+  color: #fff;
+  font-size: 14px;
+  flex: none;
+}
+
+.tarjeta__colapsar {
+  background: none;
+  border: none;
+  color: var(--titulo);
+  font-size: 18px;
+  line-height: 1;
+  padding: 4px;
+}
+
+.tarjeta__cuerpo { margin-top: 12px; }
+.tarjeta[data-colapsada="true"] .tarjeta__cuerpo { display: none; }
+
+.tarjeta__subtitulo {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--texto);
+  margin: 14px 0 6px;
+}
+.tarjeta__subtitulo:first-child { margin-top: 0; }
+
+/* --- Fichas (lenguaje, dominio) --- */
+
+.lista-fichas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 10px;
+}
+
+.ficha {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #fff;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 999px;
+  padding: 5px 6px 5px 12px;
+  font-size: 15px;
+}
+
+.ficha__quitar {
+  background: var(--falso-fondo);
+  border: 1px solid var(--falso-borde);
+  color: #5A2E3A;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  font-size: 13px;
+  line-height: 1;
+  padding: 0;
+}
+
+.fila-agregar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.fila-agregar input[type="text"],
+.fila-agregar input[type="number"] {
+  flex: 1;
+  padding: 7px 10px;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.fila-agregar input[type="number"] { flex: 0 0 72px; }
+
+.boton-agregar {
+  background: var(--titulo);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 15px;
+}
+
+.boton-secundario {
+  background: #fff;
+  color: var(--titulo);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 15px;
+}
+
+/* --- Dominio con dibujitos --- */
+
+.ficha-dominio {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  background: #fff;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 12px;
+  padding: 8px 10px;
+  position: relative;
+  min-width: 56px;
+}
+
+.ficha-dominio svg { width: 28px; height: 28px; }
+.ficha-dominio__nombre { font-size: 14px; }
+
+.ficha-dominio__quitar {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: var(--falso-fondo);
+  border: 1px solid var(--falso-borde);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 12px;
+  line-height: 1;
+  padding: 0;
+}
+
+/* --- Tabla de funciones/constantes --- */
+
+.tabla-funciones {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.tabla-funciones th, .tabla-funciones td {
+  border-bottom: 1px solid var(--borde-dorado);
+  padding: 6px 8px;
+  text-align: left;
+}
+
+.tabla-funciones select {
+  padding: 4px 6px;
+  border-radius: 6px;
+  border: 1px solid var(--borde-dorado);
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.tabla-funciones select.incompleto {
+  border-color: var(--falso-borde);
+  background: #FDEFF2;
+}
+
+/* --- Predicados: tuplas arrastrables --- */
+
+.predicado-bloque { margin-bottom: 14px; }
+
+.zonas-tuplas {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.zona-tuplas {
+  flex: 1;
+  min-width: 180px;
+  background: #fff;
+  border: 1px dashed var(--borde-dorado);
+  border-radius: 10px;
+  padding: 8px;
+  min-height: 48px;
+}
+
+.zona-tuplas__titulo {
+  font-size: 13px;
+  color: var(--texto-secundario);
+  margin: 0 0 6px;
+}
+
+.zona-tuplas.sobre-arrastre { background: #FFF6E9; }
+
+.ficha-tupla {
+  display: inline-block;
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 999px;
+  padding: 4px 10px;
+  margin: 3px;
+  font-size: 14px;
+  cursor: grab;
+}
+
+.ficha-tupla:focus-visible { outline: 3px solid var(--titulo); }
+
+.aviso {
+  font-size: 14px;
+  background: #FFF6E9;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-top: 6px;
+}
+
+/* --- Fórmula --- */
+
+.campo-formula-envoltura {
+  position: relative;
+  margin-bottom: 8px;
+}
+
+.campo-formula,
+.capa-espejo {
+  width: 100%;
+  min-height: 56px;
+  font-size: 20px;
+  font-family: "Quicksand", sans-serif;
+  padding: 10px 12px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid var(--borde-dorado);
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 0;
+}
+
+/* La capa espejo va en el flujo normal: ella le da su altura real a
+   la envoltura (según cuánto texto haya). Tiene fondo blanco y aquí
+   se dibuja el subrayado de error. */
+.capa-espejo {
+  color: transparent;
+  background: #fff;
+  pointer-events: none;
+}
+
+/* El campo de texto real va encima, ocupando el mismo espacio exacto
+   (posición absoluta sobre la envoltura), con fondo transparente para
+   que el usuario vea su texto normal y, debajo, el subrayado si hay
+   error. No es redimensionable para que nunca se desalinee del espejo. */
+.campo-formula {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background: transparent;
+  border-color: transparent;
+  color: var(--texto);
+  resize: none;
+  overflow: hidden;
+}
+
+.capa-espejo mark.error {
+  background: transparent;
+  border-bottom: 3px solid var(--falso-borde);
+  color: transparent;
+}
+
+.teclado-simbolico {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.tecla {
+  background: #fff;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  min-width: 40px;
+  padding: 8px 10px;
+  font-size: 18px;
+  color: var(--titulo);
+}
+
+.tecla--texto { font-size: 15px; }
+
+.mensaje-error {
+  color: var(--falso-borde);
+  background: #FDEFF2;
+  border: 1px solid var(--falso-borde);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 15px;
+  margin-top: 6px;
+}
+
+.boton-evaluar {
+  background: var(--titulo);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 17px;
+  margin-top: 8px;
+}
+
+.boton-evaluar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* --- Entorno --- */
+
+.fila-entorno {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.fila-entorno select {
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid var(--borde-dorado);
+  font-size: 15px;
+  font-family: inherit;
+}
+
+/* --- Árbol (placeholder en Fase 2) --- */
+
+.tarjeta-arbol {
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--texto-secundario);
+}
+
+/* --- Resultado --- */
+
+.tarjeta-resultado__valor {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 28px;
+  font-weight: 500;
+  padding: 10px 22px;
+  border-radius: 14px;
+  margin-bottom: 10px;
+}
+
+.tarjeta-resultado__valor--verdadero {
+  background: var(--verdadero-fondo);
+  border: 2px solid var(--verdadero-borde);
+  color: var(--texto);
+}
+
+.tarjeta-resultado__valor--falso {
+  background: var(--falso-fondo);
+  border: 2px solid var(--falso-borde);
+  color: var(--texto);
+}
+
+.tarjeta-resultado__razon {
+  font-size: 16px;
+  color: var(--texto);
+}
+
+.tarjeta-resultado__errores {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* --- Menú de ejemplos --- */
+
+.menu-ejemplos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+/* --- Accesibilidad: respeto a prefers-reduced-motion --- */
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+.oculto { display: none !important; }
+
+.sr-solo {
+  position: absolute;
+  width: 1px; height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
