@@ -1,0 +1,10 @@
+Aquí van los archivos de fuente reales (formato .woff2):
+
+  PinyonScript-Regular.woff2
+  Quicksand-Regular.woff2
+  Quicksand-Medium.woff2
+
+Mientras no estén, css/estilos.css ya tiene el @font-face apuntando a
+estos nombres, y el navegador usa el respaldo (cursive / sans-serif)
+sin romper nada. En cuanto Mar consiga los archivos, solo hay que
+copiarlos aquí con estos mismos nombres y listo.
