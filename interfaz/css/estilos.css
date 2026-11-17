@@ -884,6 +884,103 @@ select:focus-visible,
   color: var(--texto-secundario);
 }
 
+/* --- Modo juego (Fase 6) --- */
+
+.encabezado__boton-juego { margin-top: 10px; }
+
+.pantalla-juego {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 16px 32px;
+}
+
+.juego-barra {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
+.juego-banda {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.juego-juguete {
+  background: #fff;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 12px;
+  padding: 10px 12px;
+  min-width: 90px;
+  text-align: center;
+}
+
+.juego-juguete__nombre { font-weight: 500; margin-bottom: 6px; }
+
+.juego-juguete__etiquetas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  justify-content: center;
+  min-height: 20px;
+}
+
+.juego-etiqueta {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+  color: var(--texto-secundario);
+}
+
+.juego-pedido {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 14px;
+}
+
+.juego-pedido__frase { font-size: 17px; margin: 0 0 8px; }
+.juego-pedido__formula { font-size: 20px; color: var(--titulo); margin: 0; }
+
+.juego-decision {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.juego-boton-decision {
+  flex: 1;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 17px;
+  border: 2px solid;
+}
+
+.juego-boton-decision--verdadero { background: var(--verdadero-fondo); border-color: var(--verdadero-borde); color: var(--texto); }
+.juego-boton-decision--falso { background: var(--falso-fondo); border-color: var(--falso-borde); color: var(--texto); }
+.juego-boton-decision:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.juego-zona-arbol {
+  background: var(--fondo-tarjeta);
+  border: 1px solid var(--borde-dorado);
+  border-radius: 16px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.juego-arbol-lienzo {
+  position: relative;
+  height: 360px;
+  overflow: hidden;
+  touch-action: none;
+}
+
+.juego-zona-resultado { margin-bottom: 14px; }
+
 /* --- Accesibilidad: respeto a prefers-reduced-motion --- */
 @media (prefers-reduced-motion: reduce) {
   * { animation: none !important; transition: none !important; }

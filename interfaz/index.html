@@ -17,6 +17,7 @@
     <h1 class="encabezado__titulo">Lógica Navideña</h1>
     <p class="encabezado__subtitulo">Evaluador semántico</p>
     <p class="encabezado__curso">MM3032 · Lógica Matemática</p>
+    <button type="button" class="boton-secundario encabezado__boton-juego" id="boton-modo-juego">Modo juego</button>
   </header>
 
   <nav class="menu-ejemplos" id="menu-ejemplos" aria-label="Cargar ejemplo">
@@ -99,6 +100,17 @@
     </section>
   </main>
 
+  <!-- Modo juego (Fase 6): aparece sobre la app normal, nunca junto a
+       ella. El mapa de niveles todavía no existe (ver js/juego-app.js). -->
+  <div class="pantalla-juego oculto" id="pantalla-juego" aria-hidden="true">
+    <div class="juego-barra">
+      <button type="button" class="boton-secundario" id="boton-volver-evaluador">← Volver al evaluador</button>
+    </div>
+    <div class="juego-pantalla" id="juego-mapa"></div>
+    <div class="juego-pantalla oculto" id="juego-taller"></div>
+    <div class="juego-pantalla oculto" id="juego-galletas"></div>
+  </div>
+
   <!-- Motor mock (TEMPORAL, ya no se usa con LN.USAR_MOCK = false, pero
        se deja cargado por si hace falta volver a él) y casos de ejemplo -->
   <script src="mock/motor-mock.js"></script>
@@ -119,6 +131,14 @@
   <script src="js/guirnalda.js"></script>
   <script src="js/arbol.js"></script>
   <script src="js/animacion.js"></script>
+
+  <!-- Modo juego (Fase 6) -->
+  <script src="js/juego-datos.js"></script>
+  <script src="js/juego-progreso.js"></script>
+  <script src="js/juego-comun.js"></script>
+  <script src="js/juego-taller.js"></script>
+  <script src="js/juego-app.js"></script>
+
   <script src="js/app.js"></script>
 </body>
 </html>
