@@ -884,7 +884,7 @@ select:focus-visible,
   color: var(--texto-secundario);
 }
 
-/* --- Modo juego (Fase 6) --- */
+/* --- Modo juego --- */
 
 .encabezado__boton-juego { margin-top: 10px; }
 

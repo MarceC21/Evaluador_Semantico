@@ -1,8 +1,6 @@
-// Orquestador del modo juego (Fase 6): alterna entre la app normal y la
-// pantalla de juego. El mapa de niveles todavía no existe (es el último
-// checkpoint de la Fase 6), así que por ahora el botón "Modo juego" entra
-// directo al Taller de Santa; cuando el mapa esté listo, pasará a ser él
-// quien decida qué pantalla abrir.
+// Alterna entre la app normal y la pantalla de juego. El mapa de niveles
+// todavía no existe, así que el botón "Modo juego" entra directo al
+// Taller de Santa.
 
 (function () {
   "use strict";

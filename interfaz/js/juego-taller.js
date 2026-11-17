@@ -1,9 +1,5 @@
-// Pantalla "Taller de Santa" (Fase 6, modo juego): llega un pedido (una
-// frase en español + su fórmula) y el jugador decide Verdadero o Falso
-// ANTES de ver el árbol. Al decidir, el árbol real se dibuja y se
-// enciende en cascada (reutilizando js/arbol.js y js/animacion.js tal
-// cual, sin tocarlos) y se compara la elección contra el motor real.
-// Ver docs/DEFENSA.md.
+// Pantalla "Taller de Santa": el jugador decide Verdadero o Falso de un
+// pedido antes de ver el árbol encenderse.
 
 (function () {
   "use strict";
@@ -39,8 +35,8 @@
       titulo.textContent = "Taller de Santa — Zona " + nivel.zona;
       contenedor.appendChild(titulo);
 
-      // --- Banda de juguetes: cada elemento del dominio con sus etiquetas
-      // (los predicados unarios que cumple), como contexto del pedido. ---
+      // Banda de juguetes: cada elemento con sus etiquetas (predicados
+      // unarios que cumple).
       var banda = document.createElement("div");
       banda.className = "juego-banda";
       nivel.interpretacion.dominio.forEach(function (elemento) {
@@ -68,7 +64,7 @@
       });
       contenedor.appendChild(banda);
 
-      // --- Pedido: frase en español + fórmula en símbolos ---
+      // Pedido: frase + fórmula.
       var pedido = document.createElement("div");
       pedido.className = "juego-pedido";
       var frase = document.createElement("p");
@@ -81,7 +77,7 @@
       pedido.appendChild(formulaTxt);
       contenedor.appendChild(pedido);
 
-      // --- Decisión del jugador ---
+      // Decisión del jugador.
       var decision = document.createElement("div");
       decision.className = "juego-decision";
       var botonV = document.createElement("button");
@@ -96,7 +92,7 @@
       decision.appendChild(botonF);
       contenedor.appendChild(decision);
 
-      // --- Árbol (se dibuja recién al decidir, para no adelantar nada) ---
+      // El árbol se dibuja recién al decidir, para no adelantar nada.
       var zonaArbol = document.createElement("div");
       zonaArbol.className = "juego-zona-arbol oculto";
       var controles = document.createElement("div");
@@ -123,7 +119,7 @@
       botonMas.addEventListener("click", function () { if (controladorArbol) controladorArbol.zoomIn(); });
       botonAjustar.addEventListener("click", function () { if (controladorArbol) controladorArbol.ajustar(); });
 
-      // --- Resultado (veredicto + razón del motor real) ---
+      // Veredicto + razón del motor.
       var zonaResultado = document.createElement("div");
       zonaResultado.className = "juego-zona-resultado oculto";
       contenedor.appendChild(zonaResultado);
@@ -140,9 +136,6 @@
 
         var caso = LN.juegoComun.evaluarCaso(nivel.lenguaje, nivel.interpretacion, nivel.formula, nivel.entorno || {});
         if (!caso.ok) {
-          // No debería pasar (los niveles se verificaron contra el motor
-          // real antes de escribirlos), pero si pasa, se avisa en vez de
-          // fallar en silencio.
           zonaResultado.classList.remove("oculto");
           resultadoUI.mostrarErrores(caso.errores);
           return;

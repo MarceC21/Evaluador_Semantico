@@ -1,8 +1,6 @@
-// Progreso del modo juego (Fase 6), guardado en localStorage. Primer uso
-// de almacenamiento persistente del proyecto: envuelto en try/catch
-// porque algunos equipos (examen, proyector) podrían tenerlo deshabilitado;
-// si falla, el juego sigue funcionando, solo que sin recordar nada entre
-// recargas de la página.
+// Progreso del modo juego, guardado en localStorage. Envuelto en
+// try/catch: si no está disponible, el juego sigue funcionando pero
+// sin recordar nada entre recargas.
 
 (function () {
   "use strict";
@@ -27,8 +25,7 @@
     try { window.localStorage.setItem(CLAVE, JSON.stringify(datos)); } catch (e) { /* ídem */ }
   }
 
-  // Solo sube la marca si las estrellas nuevas son mejores que las que
-  // ya tenía (un reintento peor no empeora el progreso guardado).
+  // Un reintento peor no empeora el progreso ya guardado.
   function marcarCompletado(modo, nivelId, estrellas) {
     var actual = datos[modo][nivelId];
     if (!actual || estrellas > actual.estrellas) {

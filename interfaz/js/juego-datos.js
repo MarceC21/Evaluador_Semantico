@@ -1,8 +1,5 @@
-// Niveles del modo juego (Fase 6). Cada nivel trae su propio lenguaje e
-// interpretación completos (mismo formato que mock/casos/casos.js), para
-// ser autocontenido y no depender de lo que haya en las tarjetas 1-4 del
-// evaluador normal. Verificados contra el motor real desde Node antes de
-// escribir las frases (ver docs/DEFENSA.md, Fase 6).
+// Niveles del modo juego: cada uno trae su propio lenguaje e
+// interpretación, igual que mock/casos/casos.js.
 
 (function () {
   "use strict";
@@ -11,9 +8,8 @@
   var LN = window.LN;
   LN.juegoDatos = LN.juegoDatos || {};
 
-  // --- Taller de Santa: evaluar un pedido antes de verlo en el árbol.
-  // Zona 1: predicados y conectivos (sin cuantificadores). Zona 2: ∃/∀.
-  // Zona 3: cuantificadores anidados y funciones.
+  // Zona 1: predicados y conectivos. Zona 2: ∃/∀. Zona 3: cuantificadores
+  // anidados y funciones.
   LN.juegoDatos.taller = [
     {
       id: "t1", zona: 1,
