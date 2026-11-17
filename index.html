@@ -9,6 +9,8 @@
 <body>
 
   <header class="encabezado">
+    <div class="guirnalda-fondo guirnalda-fondo--izq" id="guirnalda-fondo-izq"></div>
+    <div class="guirnalda-fondo guirnalda-fondo--der" id="guirnalda-fondo-der"></div>
     <h1 class="encabezado__titulo">Lógica Navideña</h1>
     <p class="encabezado__subtitulo">Evaluador semántico</p>
     <p class="encabezado__curso">MM3032 · Lógica Matemática</p>
@@ -59,7 +61,30 @@
 
     <section class="columna-derecha" aria-label="Árbol y resultado">
       <div class="tarjeta tarjeta-arbol" id="contenedor-arbol">
-        <p>El árbol navideño aparecerá aquí en la próxima fase.</p>
+        <div class="arbol-nieve" id="arbol-nieve" aria-hidden="true"></div>
+
+        <div class="controles-arbol">
+          <div class="controles-arbol__grupo" role="group" aria-label="Zoom del árbol">
+            <button type="button" class="boton-zoom" id="boton-zoom-menos" aria-label="Alejar">−</button>
+            <button type="button" class="boton-zoom" id="boton-zoom-ajustar" aria-label="Ajustar a la pantalla">Ajustar</button>
+            <button type="button" class="boton-zoom" id="boton-zoom-mas" aria-label="Acercar">+</button>
+          </div>
+          <div class="controles-arbol__grupo controles-arbol__grupo--animacion oculto" id="controles-animacion" role="group" aria-label="Animación de la evaluación">
+            <button type="button" class="boton-secundario" id="boton-ver-todo">Ver todo</button>
+            <button type="button" class="boton-secundario" id="boton-repetir">Repetir animación</button>
+            <button type="button" class="boton-secundario" id="boton-paso-anterior">◂ Anterior</button>
+            <button type="button" class="boton-secundario" id="boton-paso-siguiente">Siguiente ▸</button>
+          </div>
+        </div>
+
+        <div class="arbol-lienzo" id="arbol-lienzo">
+          <p class="arbol-lienzo__vacio">El árbol aparecerá aquí cuando la fórmula sea válida.</p>
+        </div>
+
+        <div class="leyenda-arbol oculto" id="leyenda-arbol">
+          <span class="leyenda-arbol__item"><span class="leyenda-arbol__muestra leyenda-arbol__muestra--verdadero">✓</span> Verdadero</span>
+          <span class="leyenda-arbol__item"><span class="leyenda-arbol__muestra leyenda-arbol__muestra--falso">✕</span> Falso</span>
+        </div>
       </div>
 
       <div class="tarjeta">
@@ -79,6 +104,9 @@
   <script src="js/ui-interpretacion.js"></script>
   <script src="js/ui-formula.js"></script>
   <script src="js/ui-resultado.js"></script>
+  <script src="js/guirnalda.js"></script>
+  <script src="js/arbol.js"></script>
+  <script src="js/animacion.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

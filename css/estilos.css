@@ -71,6 +71,7 @@ select:focus-visible,
 /* --- Encabezado --- */
 
 .encabezado {
+  position: relative;
   text-align: center;
   padding: 20px 12px 10px;
 }
@@ -491,16 +492,205 @@ select:focus-visible,
   font-family: inherit;
 }
 
-/* --- Árbol (placeholder en Fase 2) --- */
+/* --- Árbol navideño (Fase 3) --- */
 
 .tarjeta-arbol {
+  position: relative;
   min-height: 320px;
+}
+
+.arbol-nieve {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 16px;
+}
+
+.arbol-nieve span {
+  position: absolute;
+  top: -10px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: nieve-caer linear infinite;
+}
+
+@keyframes nieve-caer {
+  to { transform: translateY(420px); }
+}
+
+.controles-arbol {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.controles-arbol__grupo {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.boton-zoom {
+  background: #fff;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 8px;
+  min-width: 38px;
+  padding: 6px 10px;
+  font-size: 16px;
+  color: var(--titulo);
+}
+
+.arbol-lienzo {
+  position: relative;
+  height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   color: var(--texto-secundario);
+  overflow: hidden;
+  touch-action: none;
 }
+
+.arbol-lienzo__vacio { padding: 0 20px; }
+
+.arbol-lienzo.atenuado .arbol-zoom-capa { opacity: 0.4; }
+
+.arbol-zoom-capa {
+  position: absolute;
+  top: 0; left: 0;
+  transform-origin: 0 0;
+}
+
+.arbol-svg { display: block; }
+
+/* --- Nodos: esferas y luces --- */
+
+.nodo { cursor: pointer; }
+.nodo:focus-visible .nodo__cuerpo { outline: 3px solid var(--titulo); outline-offset: 2px; }
+
+.nodo__cuerpo { fill: var(--sin-evaluar); stroke: none; transition: fill 0.3s, stroke 0.3s; }
+.nodo__halo { fill: transparent; opacity: 0; transition: opacity 0.3s; }
+.nodo__reflejo { fill: #fff; opacity: 0; }
+.nodo__casquillo { fill: var(--casquillo); }
+.nodo__texto { fill: var(--texto); font-size: 14px; font-family: "Quicksand", sans-serif; }
+.nodo__marca { font-size: 13px; font-weight: 700; }
+
+.nodo--verdadero .nodo__cuerpo { fill: var(--verdadero-fondo); stroke: var(--verdadero-borde); stroke-width: 1.5px; }
+.nodo--verdadero .nodo__halo { fill: var(--verdadero-fondo); opacity: 0.35; }
+.nodo--verdadero .nodo__reflejo, .nodo--falso .nodo__reflejo { opacity: 0.6; }
+.nodo--verdadero .nodo__marca { fill: var(--verdadero-borde); }
+
+.nodo--falso .nodo__cuerpo { fill: var(--falso-fondo); stroke: var(--falso-borde); stroke-width: 1.5px; }
+.nodo--falso .nodo__halo { fill: var(--falso-fondo); opacity: 0.35; }
+.nodo--falso .nodo__marca { fill: var(--falso-borde); }
+
+.nodo--actual .nodo__cuerpo { stroke: var(--titulo); stroke-width: 3px; }
+
+.arista { stroke: #D8B8C2; stroke-width: 2px; }
+
+/* --- Silueta, tronco y estrella --- */
+
+.arbol-estrella { fill: var(--verdadero-fondo); stroke: var(--verdadero-borde); stroke-width: 1; opacity: 0.55; transform-box: fill-box; transform-origin: center; }
+.arbol-estrella.encendida { opacity: 1; animation: estrella-titilar 1.4s ease-in-out infinite alternate; }
+
+@keyframes estrella-titilar {
+  from { transform: scale(1); }
+  to { transform: scale(1.15); }
+}
+
+/* --- Guirnalda --- */
+
+.guirnalda-cable { stroke-width: 2.5px; }
+
+.bombilla { animation: bombilla-parpadeo 1.6s ease-in-out infinite alternate; }
+
+@keyframes bombilla-parpadeo {
+  from { opacity: 0.5; }
+  to { opacity: 1; }
+}
+
+.guirnalda-fondo {
+  position: absolute;
+  top: 6px;
+  pointer-events: none;
+}
+.guirnalda-fondo--izq { left: 4px; }
+.guirnalda-fondo--der { right: 4px; }
+
+/* --- Leyenda del árbol --- */
+
+.leyenda-arbol {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  margin-top: 8px;
+  font-size: 15px;
+}
+
+.leyenda-arbol__item { display: inline-flex; align-items: center; gap: 6px; }
+
+.leyenda-arbol__muestra {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.leyenda-arbol__muestra--verdadero { background: var(--verdadero-fondo); border: 1.5px solid var(--verdadero-borde); color: var(--verdadero-borde); }
+.leyenda-arbol__muestra--falso { background: var(--falso-fondo); border: 1.5px solid var(--falso-borde); color: var(--falso-borde); }
+
+/* --- Globito de explicación al hacer clic en un nodo --- */
+
+.globito-nodo {
+  position: absolute;
+  z-index: 5;
+  max-width: 280px;
+  background: #fff;
+  border: 1.5px solid var(--borde-dorado);
+  border-radius: 12px;
+  padding: 12px 14px;
+  box-shadow: 0 6px 18px rgba(90, 46, 58, 0.25);
+  font-size: 15px;
+}
+
+.globito-nodo__cerrar {
+  position: absolute;
+  top: 4px; right: 4px;
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: var(--texto-secundario);
+  padding: 4px 8px;
+}
+
+.globito-nodo__valor {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  padding: 2px 10px;
+  border-radius: 999px;
+}
+.globito-nodo__valor--verdadero { background: var(--verdadero-fondo); border: 1px solid var(--verdadero-borde); }
+.globito-nodo__valor--falso { background: var(--falso-fondo); border: 1px solid var(--falso-borde); }
+
+.globito-nodo__razon { margin: 0 0 8px; color: var(--texto); }
+
+.globito-nodo__entorno { font-size: 14px; color: var(--texto-secundario); margin-bottom: 6px; }
+
+.globito-nodo__ramas { list-style: none; margin: 0; padding: 0; font-size: 14px; }
+.globito-nodo__ramas li { display: flex; justify-content: space-between; gap: 10px; padding: 2px 0; }
+.globito-nodo__ramas li.decisiva { font-weight: 700; color: var(--titulo); }
 
 /* --- Resultado --- */
 

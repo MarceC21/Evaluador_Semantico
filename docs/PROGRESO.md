@@ -108,8 +108,63 @@ Confirmé revisando el código real (no solo su reporte):
    `interfaz/` como raíz). Al fusionar las ramas va a haber conflicto
    de rutas en esos archivos — se resuelve en la Fase 4.
 
+## Fase 3 (árbol navideño) — TERMINADA
+
+Archivos nuevos: `js/arbol.js`, `js/guirnalda.js`, `js/animacion.js`.
+Cambios en `index.html` (marcado de la tarjeta del árbol: nieve,
+controles de zoom y animación, lienzo, leyenda, y las dos guirnaldas
+de fondo del encabezado), `css/estilos.css` (todo lo visual del
+árbol) y `js/app.js` (conecta todo: cuándo se redibuja el árbol,
+cuándo se enciende, el globito al hacer clic en un nodo).
+
+Con datos mock, ya funciona:
+
+- **Árbol que crece en vivo:** en cada tecla válida se redibuja el
+  AST en gris; si la fórmula se rompe a medias, el último árbol válido
+  se queda atenuado (nunca se dibuja un árbol a medias).
+- **Evaluación animada:** al presionar Evaluar, los nodos se
+  encienden en cascada (hojas → raíz) con ✓/✕ además del color, y la
+  estrella se enciende al final. "Repetir animación" vuelve a
+  correrla. "Paso a paso" (Anterior/Siguiente) ilumina un nodo a la
+  vez y ahí sí abre el globito de explicación solo (en "Ver todo" no,
+  para no robar el foco cada 0.4 s).
+- **Clic en un nodo:** globito con el valor, la razón, las variables
+  libres de esa subfórmula (`LN.arbol.freeVars`, calculada aparte de
+  lo que entrega el motor) con su valor en el entorno, y -en ∀/∃- las
+  ramas por elemento con el testigo o contraejemplo resaltado.
+  Funciona con clic y con teclado (Tab + Enter), se cierra con `×` o
+  Escape.
+- **Guirnalda** alrededor de la silueta (3 capas de verde), con
+  bombillitas de colores que parpadean, recalculada según el tamaño
+  real del árbol; más dos guirnaldas cortas fijas junto al título.
+- **Zoom (+/−/Ajustar) y arrastre** con el mouse (sin rueda), con
+  eventos de puntero (sirven igual para mouse o táctil).
+- Cualquier cambio que pueda dejar desactualizado un resultado ya
+  mostrado (tocar lenguaje, interpretación, entorno, o la fórmula)
+  apaga colores/leyenda/controles y cierra el globito.
+- Respeta `prefers-reduced-motion`: sin ese modo activado, "Ver todo"
+  pinta todo de una vez.
+
+Decisiones propias quedaron anotadas en `docs/DEFENSA.md`; las más
+importantes:
+
+- La silueta de "3 capas" son triángulos concéntricos desde la misma
+  punta (no 3 siluetas de pino con ramas separadas): mucho más simple
+  de calcular para cualquier tamaño de árbol y se ve igual de bien.
+- El radio de cada nodo se estima por cantidad de caracteres del
+  texto, no midiendo el texto real en el DOM: más simple y rápido, y
+  para fórmulas de este curso el resultado se ve bien.
+- Zoom y desplazamiento se reinician (con "Ajustar") cada vez que el
+  árbol se vuelve a dibujar, en vez de mantenerse mientras se escribe:
+  simplifica mucho el código y no se pierde nada importante, porque el
+  zoom se usa sobre todo después de evaluar.
+
+Pendiente, no bloqueante: igual que en la Fase 2, faltan los archivos
+reales de fuente en `assets/fonts/`.
+
 ## Próximo paso
 
-Fase 3: árbol navideño (SVG, guirnalda, animación en cascada, paso a
-paso, clic en nodo), siguiendo `docs/DISENO.md`. Pendiente de
-confirmación de Mar para empezar.
+Fase 4: integración con las funciones reales (`LN.USAR_MOCK = false`)
+y fusión con la rama de la compañera del parser (ver "Dos pendientes
+para la Fase 4" más abajo). Pendiente de confirmación de Mar para
+empezar.
