@@ -1,9 +1,9 @@
 // Puente entre la interfaz y el motor semántico.
 //
-// LN.USAR_MOCK controla de dónde vienen las 4 funciones del contrato
-// (ver docs/CONTRATO.md). Con true se usa mock/motor-mock.js (temporal).
-// Con false (Fase 4, ya activo) se usan las funciones reales de mis
-// compañeras, que js/real.js importa de src/ y deja en LN.real.*.
+// LN.USAR_MOCK controla de dónde vienen las 4 funciones. Con true se usa
+// mock/motor-mock.js (temporal). Con false (ya activo) se usan las
+// funciones reales de mis compañeras, que js/real.js importa de src/ y
+// deja en LN.real.*.
 
 (function () {
   "use strict";

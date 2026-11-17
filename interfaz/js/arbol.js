@@ -1,8 +1,8 @@
 // Árbol navideño: calcula el layout del AST (raíz arriba, hojas abajo,
 // estilo Huth & Ryan) y dibuja la escena SVG completa: silueta de pino
-// en 3 capas, tronco, estrella, guirnalda (ver js/guirnalda.js), aristas
-// y nodos como esferas/luces. También da zoom con botones y
-// desplazamiento arrastrando. Ver docs/DISENO.md.
+// en 3 capas, tronco, estrella, guirnalda, aristas y nodos como
+// esferas/luces. También da zoom con botones y desplazamiento
+// arrastrando.
 
 (function () {
   "use strict";
@@ -39,8 +39,7 @@
   }
 
   // --- Variables libres de una subfórmula (para el globito del nodo) ----
-  // Se calculan aparte en la interfaz, recorriendo solo esa subfórmula
-  // (ver docs/DISENO.md, "Clic en un nodo").
+  // Se calculan aparte en la interfaz, recorriendo solo esa subfórmula.
 
   function variablesTermino(t, acum) {
     if (t.tipo === "var") { acum[t.nombre] = true; return; }

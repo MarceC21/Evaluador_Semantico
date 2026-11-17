@@ -1,7 +1,6 @@
 // Tarjeta 3: Fórmula.
 // Campo de texto + capa espejo (para subrayar errores) + teclado
 // simbólico + atajos de teclado + autocompletar paréntesis.
-// Ver docs/DECISIONES.md y docs/CONTRATO.md.
 
 (function () {
   "use strict";

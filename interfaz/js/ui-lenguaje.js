@@ -1,6 +1,6 @@
 // Tarjeta 1: Lenguaje.
 // Fichas con nombre y aridad para constantes, funciones y predicados,
-// con botones + y - para agregar y quitar (ver docs/DECISIONES.md).
+// con botones + y - para agregar y quitar.
 
 (function () {
   "use strict";

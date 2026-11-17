@@ -4,7 +4,7 @@
 // (sin espacios vacíos), genera el texto equivalente con paréntesis
 // explícitos y se lo entrega a ui-formula.js, que lo mete en el campo
 // de texto real y sigue el mismo camino de siempre (analizarFormula,
-// árbol de la derecha, errores, etc.). Ver docs/DECISIONES.md.
+// árbol de la derecha, errores, etc.).
 
 (function () {
   "use strict";
@@ -18,8 +18,7 @@
   // --- Serialización: de árbol de piezas a texto de fórmula ---
   // Los conectivos binarios siempre se envuelven en paréntesis (aquí y
   // al mostrarlos en el lienzo), así la fórmula nunca es ambigua sin
-  // importar en qué nivel de anidamiento estén (ver docs/CONTRATO.md,
-  // punto 2 de las aclaraciones pendientes).
+  // importar en qué nivel de anidamiento estén.
 
   function serializarTermino(t) {
     if (t.tipo === "var") return t.nombre;

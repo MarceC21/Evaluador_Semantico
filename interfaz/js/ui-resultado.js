@@ -1,6 +1,6 @@
 // Resultado: muestra Verdadero/Falso en grande con la razón, o los
-// errores de validación cuando algo no se pudo evaluar.
-// "Una entrada incorrecta nunca recibe valor de verdad" (ver CLAUDE.md).
+// errores de validación cuando algo no se pudo evaluar. Una entrada
+// incorrecta nunca recibe valor de verdad.
 
 (function () {
   "use strict";

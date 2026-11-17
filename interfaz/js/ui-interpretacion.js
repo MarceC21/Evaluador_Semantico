@@ -1,7 +1,7 @@
 // Tarjeta 2: Interpretación.
 // Dominio con fichas y dibujitos navideños, tabla de funciones/constantes
 // con <select>, y predicados con tuplas arrastrables (y accesibles por
-// clic o Enter). Ver docs/DECISIONES.md.
+// clic o Enter).
 
 (function () {
   "use strict";

@@ -1,6 +1,5 @@
 /* ======================================================================
    Lógica Navideña — hoja de estilos
-   Paleta y tipografía según docs/DISENO.md.
    ====================================================================== */
 
 /* Fuentes locales con @font-face (Pinyon Script y Quicksand 400/500,
@@ -631,7 +630,7 @@ select:focus-visible,
   font-family: inherit;
 }
 
-/* --- Árbol navideño (Fase 3) --- */
+/* --- Árbol navideño --- */
 
 .tarjeta-arbol {
   position: relative;
