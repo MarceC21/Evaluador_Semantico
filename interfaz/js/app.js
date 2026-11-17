@@ -126,7 +126,9 @@
         cuerpo.appendChild(entornoDiv);
       }
 
-      if (datoNodo.ramas) {
+      // El motor real deja "ramas" en [] (no en null) cuando el nodo no es
+      // un cuantificador, así que se revisa también la longitud.
+      if (datoNodo.ramas && datoNodo.ramas.length > 0) {
         var lista = document.createElement("ul");
         lista.className = "globito-nodo__ramas";
         datoNodo.ramas.forEach(function (r) {
@@ -330,7 +332,11 @@
         return;
       }
 
-      var resultado = LN.api.evaluar(analisis.ast, estado.interpretacion, estado.entorno);
+      // El motor real de validarEntorno devuelve el entorno ya limpio
+      // (solo las variables libres, validadas); el mock no trae ese
+      // campo, así que en ese caso se usa el entorno tal cual.
+      var entornoParaEvaluar = validacionEntorno.entorno || estado.entorno;
+      var resultado = LN.api.evaluar(analisis.ast, estado.interpretacion, entornoParaEvaluar);
       estado.ultimoResultado = resultado;
       resultadoUI.mostrarResultado(resultado.valor, resultado.nodos[resultado.raiz].razon);
       mostrarResultadoEnArbol(resultado);

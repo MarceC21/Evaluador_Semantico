@@ -94,9 +94,15 @@
     </section>
   </main>
 
-  <!-- Motor mock (TEMPORAL) y casos de ejemplo -->
+  <!-- Motor mock (TEMPORAL, ya no se usa con LN.USAR_MOCK = false, pero
+       se deja cargado por si hace falta volver a él) y casos de ejemplo -->
   <script src="mock/motor-mock.js"></script>
   <script src="mock/casos/casos.js"></script>
+
+  <!-- Funciones reales de mis compañeras (Fase 4). Es un módulo porque
+       su código usa import/export: por eso esta página necesita abrirse
+       con un servidor local (ver README.md), no con doble clic. -->
+  <script type="module" src="js/real.js"></script>
 
   <!-- Interfaz -->
   <script src="js/api.js"></script>

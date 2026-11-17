@@ -2,8 +2,8 @@
 //
 // LN.USAR_MOCK controla de dónde vienen las 4 funciones del contrato
 // (ver docs/CONTRATO.md). Con true se usa mock/motor-mock.js (temporal).
-// Cuando mis compañeras terminen su parte, se cambia a false y LN.api.*
-// llama directamente a las funciones reales que ellas expongan.
+// Con false (Fase 4, ya activo) se usan las funciones reales de mis
+// compañeras, que js/real.js importa de src/ y deja en LN.real.*.
 
 (function () {
   "use strict";
@@ -12,7 +12,7 @@
   var LN = window.LN;
 
   // --- ÚNICO INTERRUPTOR QUE HAY QUE CAMBIAR PARA INTEGRAR ---
-  LN.USAR_MOCK = true;
+  LN.USAR_MOCK = false;
 
   LN.api = {
     analizarFormula: function (texto, lenguaje) {
