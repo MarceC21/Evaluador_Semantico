@@ -1,0 +1,11 @@
+Archivos de fuente reales (formato .woff2), ya descargados de Google
+Fonts (subset "latin": cubre letras, acentos y ñ, lo que necesita el
+texto en español):
+
+  PinyonScript-Regular.woff2
+  Quicksand-Regular.woff2
+  Quicksand-Medium.woff2
+
+css/estilos.css ya tiene el @font-face apuntando a estos nombres. Si
+algún día falta alguno, el navegador usa el respaldo (cursive /
+sans-serif) sin romper nada.

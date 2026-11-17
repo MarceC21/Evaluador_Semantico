@@ -1,0 +1,4 @@
+# Documentos de trabajo: se quedan solo en mi disco, no se suben al repo
+# compartido. Ningun .md (README.md, CLAUDE.md, los de docs/) se sube.
+*.md
+docs/*

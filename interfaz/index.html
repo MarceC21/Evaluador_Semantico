@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lógica Navideña — Evaluador semántico</title>
+<!-- Favicon como SVG en línea (arbolito), para que el navegador no pida
+     favicon.ico por su cuenta y salga un 404 en la consola. -->
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpolygon points='12,2 18,12 6,12' fill='%239FC5A0'/%3E%3Cpolygon points='12,7 20,17 4,17' fill='%23B3D4B3'/%3E%3Crect x='10.5' y='17' width='3' height='4' fill='%23B08968'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/estilos.css">
+</head>
+<body>
+
+  <header class="encabezado">
+    <div class="guirnalda-fondo guirnalda-fondo--izq" id="guirnalda-fondo-izq"></div>
+    <div class="guirnalda-fondo guirnalda-fondo--der" id="guirnalda-fondo-der"></div>
+    <h1 class="encabezado__titulo">Lógica Navideña</h1>
+    <p class="encabezado__subtitulo">Evaluador semántico</p>
+    <p class="encabezado__curso">MM3032 · Lógica Matemática</p>
+  </header>
+
+  <nav class="menu-ejemplos" id="menu-ejemplos" aria-label="Cargar ejemplo">
+    <span class="menu-ejemplos__etiqueta">Ejemplos:</span>
+  </nav>
+
+  <main class="app">
+    <section class="columna-izquierda" aria-label="Datos de entrada">
+
+      <!-- Tarjeta 1: Lenguaje -->
+      <div class="tarjeta" data-colapsada="false">
+        <button type="button" class="tarjeta__encabezado" aria-expanded="true" aria-controls="cuerpo-lenguaje">
+          <span class="tarjeta__titulo"><span class="tarjeta__numero">1</span> Lenguaje</span>
+          <span class="tarjeta__colapsar" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="tarjeta__cuerpo" id="cuerpo-lenguaje"></div>
+      </div>
+
+      <!-- Tarjeta 2: Interpretación -->
+      <div class="tarjeta" data-colapsada="false">
+        <button type="button" class="tarjeta__encabezado" aria-expanded="true" aria-controls="cuerpo-interpretacion">
+          <span class="tarjeta__titulo"><span class="tarjeta__numero">2</span> Interpretación</span>
+          <span class="tarjeta__colapsar" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="tarjeta__cuerpo" id="cuerpo-interpretacion"></div>
+      </div>
+
+      <!-- Tarjeta 3: Fórmula -->
+      <div class="tarjeta" data-colapsada="false">
+        <button type="button" class="tarjeta__encabezado" aria-expanded="true" aria-controls="cuerpo-formula">
+          <span class="tarjeta__titulo"><span class="tarjeta__numero">3</span> Fórmula</span>
+          <span class="tarjeta__colapsar" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="tarjeta__cuerpo" id="cuerpo-formula"></div>
+      </div>
+
+      <!-- Tarjeta 4: Entorno (solo aparece si hay variables libres) -->
+      <div class="tarjeta oculto" data-colapsada="false" id="tarjeta-entorno">
+        <button type="button" class="tarjeta__encabezado" aria-expanded="true" aria-controls="cuerpo-entorno">
+          <span class="tarjeta__titulo"><span class="tarjeta__numero">4</span> Entorno</span>
+          <span class="tarjeta__colapsar" aria-hidden="true">&#9662;</span>
+        </button>
+        <div class="tarjeta__cuerpo" id="cuerpo-entorno"></div>
+      </div>
+
+    </section>
+
+    <section class="columna-derecha" aria-label="Árbol y resultado">
+      <div class="tarjeta tarjeta-arbol" id="contenedor-arbol">
+        <div class="arbol-nieve" id="arbol-nieve" aria-hidden="true"></div>
+
+        <div class="controles-arbol">
+          <div class="controles-arbol__grupo" role="group" aria-label="Zoom del árbol">
+            <button type="button" class="boton-zoom" id="boton-zoom-menos" aria-label="Alejar">−</button>
+            <button type="button" class="boton-zoom" id="boton-zoom-ajustar" aria-label="Ajustar a la pantalla">Ajustar</button>
+            <button type="button" class="boton-zoom" id="boton-zoom-mas" aria-label="Acercar">+</button>
+          </div>
+          <div class="controles-arbol__grupo controles-arbol__grupo--animacion oculto" id="controles-animacion" role="group" aria-label="Animación de la evaluación">
+            <button type="button" class="boton-secundario" id="boton-ver-todo">Ver todo</button>
+            <button type="button" class="boton-secundario" id="boton-repetir">Repetir animación</button>
+            <button type="button" class="boton-secundario" id="boton-paso-anterior">◂ Anterior</button>
+            <button type="button" class="boton-secundario" id="boton-paso-siguiente">Siguiente ▸</button>
+          </div>
+        </div>
+
+        <div class="arbol-lienzo" id="arbol-lienzo">
+          <p class="arbol-lienzo__vacio">El árbol aparecerá aquí cuando la fórmula sea válida.</p>
+        </div>
+
+        <div class="leyenda-arbol oculto" id="leyenda-arbol">
+          <span class="leyenda-arbol__item"><span class="leyenda-arbol__muestra leyenda-arbol__muestra--verdadero">✓</span> Verdadero</span>
+          <span class="leyenda-arbol__item"><span class="leyenda-arbol__muestra leyenda-arbol__muestra--falso">✕</span> Falso</span>
+        </div>
+      </div>
+
+      <div class="tarjeta">
+        <h2>Resultado</h2>
+        <div id="contenedor-resultado"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Motor mock (TEMPORAL, ya no se usa con LN.USAR_MOCK = false, pero
+       se deja cargado por si hace falta volver a él) y casos de ejemplo -->
+  <script src="mock/motor-mock.js"></script>
+  <script src="mock/casos/casos.js"></script>
+
+  <!-- Funciones reales de mis compañeras (Fase 4). Es un módulo porque
+       su código usa import/export: por eso esta página necesita abrirse
+       con un servidor local (ver README.md), no con doble clic. -->
+  <script type="module" src="js/real.js"></script>
+
+  <!-- Interfaz -->
+  <script src="js/api.js"></script>
+  <script src="js/ui-lenguaje.js"></script>
+  <script src="js/ui-interpretacion.js"></script>
+  <script src="js/ui-formula.js"></script>
+  <script src="js/ui-resultado.js"></script>
+  <script src="js/guirnalda.js"></script>
+  <script src="js/arbol.js"></script>
+  <script src="js/animacion.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
