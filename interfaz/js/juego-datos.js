@@ -84,4 +84,90 @@
       frase: "Todo juguete combina con la pareja que le asignó Santa."
     }
   ];
+
+  // Galletas de jengibre: el jugador decora las galletas (toca predicados
+  // unarios) para que la fórmula fija dé el valor de `objetivo`.
+  LN.juegoDatos.galletas = [
+    {
+      id: "g1", zona: 1,
+      lenguaje: { predicados: [{ nombre: "Botones", aridad: 1 }, { nombre: "Gorro", aridad: 1 }] },
+      interpretacion: {
+        dominio: ["Galleta 1", "Galleta 2"],
+        funciones: {},
+        predicados: { Botones: [["Galleta 2"]], Gorro: [["Galleta 2"]] }
+      },
+      formula: "Botones(x) ∧ Gorro(x)",
+      entorno: { x: "Galleta 1" },
+      objetivo: true,
+      frase: "Decora la Galleta 1 para que tenga botones y gorro a la vez."
+    },
+    {
+      id: "g2", zona: 1,
+      lenguaje: { predicados: [{ nombre: "Botones", aridad: 1 }, { nombre: "Glaseado", aridad: 1 }] },
+      interpretacion: {
+        dominio: ["Galleta 1", "Galleta 2"],
+        funciones: {},
+        predicados: { Botones: [["Galleta 2"]], Glaseado: [["Galleta 1"], ["Galleta 2"]] }
+      },
+      formula: "Botones(x) → Glaseado(x)",
+      entorno: { x: "Galleta 1" },
+      objetivo: false,
+      frase: "Decora la Galleta 1 para armar un contraejemplo: que tenga botones pero no tenga glaseado."
+    },
+    {
+      id: "g3", zona: 2,
+      lenguaje: { predicados: [{ nombre: "Botones", aridad: 1 }, { nombre: "Gorro", aridad: 1 }] },
+      interpretacion: {
+        dominio: ["Galleta 1", "Galleta 2", "Galleta 3", "Galleta 4"],
+        funciones: {},
+        predicados: { Botones: [["Galleta 1"], ["Galleta 3"]], Gorro: [["Galleta 2"]] }
+      },
+      formula: "∃x (Botones(x) ∧ Gorro(x))",
+      entorno: {},
+      objetivo: true,
+      frase: "Decora el plato para que alguna galleta tenga botones y gorro a la vez."
+    },
+    {
+      id: "g4", zona: 2,
+      lenguaje: { predicados: [{ nombre: "Botones", aridad: 1 }, { nombre: "Gorro", aridad: 1 }] },
+      interpretacion: {
+        dominio: ["Galleta 1", "Galleta 2", "Galleta 3", "Galleta 4"],
+        funciones: {},
+        predicados: {
+          Botones: [["Galleta 1"], ["Galleta 2"], ["Galleta 3"], ["Galleta 4"]],
+          Gorro: [["Galleta 1"], ["Galleta 2"], ["Galleta 3"], ["Galleta 4"]]
+        }
+      },
+      formula: "∀x (Botones(x) → Gorro(x))",
+      entorno: {},
+      objetivo: false,
+      frase: "Decora el plato para armar un contraejemplo: una galleta con botones pero sin gorro."
+    },
+    {
+      id: "g5", zona: 3,
+      lenguaje: { predicados: [{ nombre: "Botones", aridad: 1 }, { nombre: "Gorro", aridad: 1 }, { nombre: "Lazo", aridad: 1 }] },
+      interpretacion: {
+        dominio: ["Galleta 1", "Galleta 2", "Galleta 3"],
+        funciones: {},
+        predicados: { Botones: [["Galleta 1"]], Gorro: [["Galleta 2"]], Lazo: [["Galleta 3"]] }
+      },
+      formula: "∀x ∃y (Botones(x) → (Gorro(y) ∧ Lazo(y)))",
+      entorno: {},
+      objetivo: true,
+      frase: "Decora el plato para que, si alguna galleta tiene botones, en el plato haya también una galleta con gorro y lazo a la vez."
+    },
+    {
+      id: "g6", zona: 3,
+      lenguaje: { predicados: [{ nombre: "Botones", aridad: 1 }, { nombre: "Lazo", aridad: 1 }] },
+      interpretacion: {
+        dominio: ["Galleta 1", "Galleta 2", "Galleta 3"],
+        funciones: {},
+        predicados: { Botones: [["Galleta 1"]], Lazo: [["Galleta 1"], ["Galleta 2"], ["Galleta 3"]] }
+      },
+      formula: "∃x ∀y (Botones(x) ∧ Lazo(y))",
+      entorno: {},
+      objetivo: false,
+      frase: "Decora el plato para armar un contraejemplo: una galleta con botones mientras no todas tienen lazo."
+    }
+  ];
 })();

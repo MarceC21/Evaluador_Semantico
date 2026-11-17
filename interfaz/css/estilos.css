@@ -895,7 +895,9 @@ select:focus-visible,
 
 .juego-barra {
   display: flex;
+  flex-wrap: wrap;
   justify-content: flex-end;
+  gap: 10px;
   margin-bottom: 14px;
 }
 
@@ -944,6 +946,23 @@ select:focus-visible,
 
 .juego-pedido__frase { font-size: 17px; margin: 0 0 8px; }
 .juego-pedido__formula { font-size: 20px; color: var(--titulo); margin: 0; }
+.juego-objetivo { font-size: 15px; color: var(--texto-secundario); margin: 8px 0 0; font-weight: 500; }
+
+.juego-decoracion {
+  background: #fff;
+  border: 1px solid var(--borde-dorado);
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 13px;
+  color: var(--texto-secundario);
+}
+
+.juego-decoracion--activa {
+  background: var(--verdadero-fondo);
+  border-color: var(--verdadero-borde);
+  color: var(--texto);
+  font-weight: 500;
+}
 
 .juego-decision {
   display: flex;
