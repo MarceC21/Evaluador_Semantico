@@ -3,10 +3,11 @@
    Paleta y tipografía según docs/DISENO.md.
    ====================================================================== */
 
-/* Fuentes locales con @font-face. Los archivos reales (.woff2) todavía no
-   llegan de descarga; mientras tanto el navegador usa el fallback
-   (cursive / sans-serif). Cuando se tengan los archivos, basta con
-   colocarlos en assets/fonts/ con estos mismos nombres. */
+/* Fuentes locales con @font-face (Pinyon Script y Quicksand 400/500,
+   bajadas de Google Fonts a assets/fonts/, solo el subset "latin": letras,
+   acentos y ñ, que es lo que necesita el texto en español). Si algún día
+   faltan los archivos, el navegador usa el respaldo (cursive / sans-serif)
+   sin romper nada. */
 @font-face {
   font-family: "Pinyon Script";
   src: url("../assets/fonts/PinyonScript-Regular.woff2") format("woff2");
@@ -733,9 +734,16 @@ select:focus-visible,
 .menu-ejemplos {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
   justify-content: center;
   margin-bottom: 8px;
+}
+
+.menu-ejemplos__etiqueta {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--texto-secundario);
 }
 
 /* --- Accesibilidad: respeto a prefers-reduced-motion --- */

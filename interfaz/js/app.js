@@ -95,15 +95,27 @@
     // en el entorno, y -si es ∀ o ∃- las ramas por elemento del dominio con
     // el testigo o contraejemplo resaltado. Ver docs/DISENO.md.
     function mostrarGlobito(id) {
-      if (!controladorArbol || !estado.ultimoResultado) return;
-      var datoNodo = estado.ultimoResultado.nodos[id];
-      if (!datoNodo) return;
-      var astNodo = controladorArbol.nodoAst(id);
-      var libres = LN.arbol.freeVars(astNodo);
+      if (!controladorArbol) return;
+      var datoNodo = (estado.resultadoVigente && estado.ultimoResultado) ? estado.ultimoResultado.nodos[id] : null;
 
       var g = crearGlobito();
       var cuerpo = g.querySelector(".globito-nodo__cuerpo");
       cuerpo.textContent = "";
+
+      // Clic en un nodo del árbol todavía gris (antes de Evaluar, o
+      // después de cambiar algo que dejó el resultado desactualizado):
+      // se abre igual el globito, para que el clic siempre haga algo
+      // visible, pero con un aviso en vez de una explicación inventada.
+      if (!datoNodo) {
+        var aviso = document.createElement("p");
+        aviso.className = "globito-nodo__razon";
+        aviso.textContent = "Este nodo todavía no se ha evaluado. Presiona «Evaluar» para ver su explicación.";
+        cuerpo.appendChild(aviso);
+        return mostrarGlobitoEn(g, id);
+      }
+
+      var astNodo = controladorArbol.nodoAst(id);
+      var libres = LN.arbol.freeVars(astNodo);
 
       var valor = document.createElement("div");
       valor.className = "globito-nodo__valor " + (datoNodo.valor ? "globito-nodo__valor--verdadero" : "globito-nodo__valor--falso");
@@ -147,6 +159,13 @@
         cuerpo.appendChild(lista);
       }
 
+      mostrarGlobitoEn(g, id);
+    }
+
+    // Posiciona el globito (ya con su contenido armado) junto al nodo
+    // "id" y lo muestra. Separado de mostrarGlobito() porque el aviso de
+    // "todavía no evaluado" también necesita posicionarse igual.
+    function mostrarGlobitoEn(g, id) {
       g.classList.remove("oculto");
       g.style.visibility = "hidden";
       var pos = controladorArbol.posicionNodo(id, tarjetaArbolEl);
@@ -163,7 +182,6 @@
     }
 
     function manejarClicNodo(id) {
-      if (!estado.resultadoVigente || !estado.ultimoResultado) return;
       mostrarGlobito(id);
     }
 
