@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { prepararEvaluacion, evaluar } from '../src/motor.js';
+import { prepararEvaluacion, evaluar, evaluarFormula } from '../src/motor.js';
 
 const lenguaje = {
   funciones: [
@@ -351,4 +351,286 @@ test('Evalúa una negación falsa', () => {
 
   assert.equal(resultado.ok, true);
   assert.equal(resultado.valor, false);
+});
+
+// --------------------------------------------------
+// Evaluación de conectivos
+// --------------------------------------------------
+
+test('Evalúa una conjunción verdadera', () => {
+  const resultado = evaluarFormula(
+    'P(x) ∧ R(x, f(x))',
+    lenguaje,
+    interpretacion,
+    { x: 'a' }
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, true);
+});
+
+
+test('Evalúa una conjunción falsa', () => {
+  const resultado = evaluarFormula(
+    'P(x) ∧ P(f(x))',
+    lenguaje,
+    interpretacion,
+    { x: 'a' }
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, false);
+});
+
+
+test('Evalúa una disyunción verdadera', () => {
+  const resultado = evaluarFormula(
+    'P(x) ∨ P(f(x))',
+    lenguaje,
+    interpretacion,
+    { x: 'a' }
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, true);
+});
+
+
+test('Evalúa una implicación falsa', () => {
+  const resultado = evaluarFormula(
+    'P(x) → P(f(x))',
+    lenguaje,
+    interpretacion,
+    { x: 'a' }
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, false);
+});
+
+
+test('Evalúa una implicación verdadera', () => {
+  const resultado = evaluarFormula(
+    'P(x) → P(f(x))',
+    lenguaje,
+    interpretacion,
+    { x: 'b' }
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, true);
+});
+
+
+// --------------------------------------------------
+// Evaluación de cuantificadores
+// --------------------------------------------------
+
+test('Universal falso guarda contraejemplo', () => {
+  const resultado = evaluarFormula(
+    '∀x P(x)',
+    lenguaje,
+    interpretacion,
+    {}
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, false);
+
+  const raiz =
+    resultado.nodos[resultado.raiz];
+
+  assert.equal(
+    raiz.contraejemplo,
+    'b'
+  );
+
+  assert.deepEqual(
+    raiz.ramas,
+    [
+      {
+        elemento: 'a',
+        valor: true
+      },
+      {
+        elemento: 'b',
+        valor: false
+      }
+    ]
+  );
+});
+
+
+test('Universal verdadero marca comprobación completa', () => {
+  const resultado = evaluarFormula(
+    '∀x R(x, f(x))',
+    lenguaje,
+    interpretacion,
+    {}
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, true);
+
+  const raiz =
+    resultado.nodos[resultado.raiz];
+
+  assert.equal(
+    raiz.contraejemplo,
+    null
+  );
+
+  assert.equal(
+    raiz.comprobacion,
+    'completa'
+  );
+});
+
+
+test('Existencial verdadero guarda testigo', () => {
+  const resultado = evaluarFormula(
+    '∃x P(x)',
+    lenguaje,
+    interpretacion,
+    {}
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, true);
+
+  const raiz =
+    resultado.nodos[resultado.raiz];
+
+  assert.equal(
+    raiz.testigo,
+    'a'
+  );
+});
+
+
+test('Existencial falso marca comprobación completa', () => {
+  const resultado = evaluarFormula(
+    '∃x (P(x) ∧ P(f(x)))',
+    lenguaje,
+    interpretacion,
+    {}
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, false);
+
+  const raiz =
+    resultado.nodos[resultado.raiz];
+
+  assert.equal(
+    raiz.testigo,
+    null
+  );
+
+  assert.equal(
+    raiz.comprobacion,
+    'completa'
+  );
+
+  assert.deepEqual(
+    raiz.ramas,
+    [
+      {
+        elemento: 'a',
+        valor: false
+      },
+      {
+        elemento: 'b',
+        valor: false
+      }
+    ]
+  );
+});
+
+
+// --------------------------------------------------
+// Cuantificadores anidados
+// --------------------------------------------------
+
+test('Respeta cuantificadores anidados', () => {
+  const resultado = evaluarFormula(
+    '∀x ∃x P(x)',
+    lenguaje,
+    interpretacion,
+    {}
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, true);
+});
+
+
+// --------------------------------------------------
+// Contrato final del motor
+// --------------------------------------------------
+
+test('Devuelve el contrato completo del motor', () => {
+  const resultado = evaluarFormula(
+    'P(x) → P(f(x))',
+    lenguaje,
+    interpretacion,
+    { x: 'a' }
+  );
+
+  assert.equal(resultado.ok, true);
+
+  assert.equal(
+    resultado.valor,
+    false
+  );
+
+  assert.equal(
+    resultado.raiz,
+    resultado.ast.id
+  );
+
+  assert.equal(
+    Array.isArray(resultado.orden),
+    true
+  );
+
+  assert.equal(
+    resultado.orden.at(-1),
+    resultado.raiz
+  );
+
+  assert.ok(
+    resultado.nodos[resultado.raiz]
+  );
+
+  assert.equal(
+    typeof resultado.nodos[
+      resultado.raiz
+    ].razon,
+    'string'
+  );
+});
+
+test('Una entrada inválida nunca recibe valor de verdad', () => {
+  const resultado = evaluarFormula(
+    'P(x) ∧',
+    lenguaje,
+    interpretacion,
+    {}
+  );
+
+  assert.equal(
+    resultado.ok,
+    false
+  );
+
+  assert.equal(
+    'valor' in resultado,
+    false
+  );
+
+  assert.equal(
+    'ast' in resultado,
+    false
+  );
 });
