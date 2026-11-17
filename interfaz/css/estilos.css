@@ -630,6 +630,35 @@ select:focus-visible,
   font-family: inherit;
 }
 
+/* --- Nieve de fondo de toda la página (decorativo) --- */
+
+.nieve-fondo {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.nieve-fondo span {
+  position: absolute;
+  top: -10px;
+  background: #fff;
+  border-radius: 50%;
+  opacity: 0.85;
+  animation: nieve-fondo-caer linear infinite;
+}
+
+@keyframes nieve-fondo-caer {
+  0%   { transform: translate(0, 0); opacity: 0; }
+  8%   { opacity: 0.85; }
+  25%  { transform: translate(10px, 27vh); }
+  50%  { transform: translate(-10px, 54vh); }
+  75%  { transform: translate(10px, 81vh); }
+  92%  { opacity: 0.85; }
+  100% { transform: translate(0, 108vh); opacity: 0; }
+}
+
 /* --- Árbol navideño --- */
 
 .tarjeta-arbol {
