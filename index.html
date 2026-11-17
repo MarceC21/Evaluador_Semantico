@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MM3032 · Pruebas del parser</title>
+  <style>
+    :root { color-scheme: light; font: 16px/1.5 system-ui, sans-serif; color: #19312f; background: #f2f5f2; }
+    * { box-sizing: border-box; }
+    body { max-width: 1220px; margin: auto; padding: 32px 20px 64px; }
+    h1 { margin: 4px 0 8px; font-size: clamp(1.8rem, 4vw, 2.5rem); line-height: 1.2; }
+    h2 { margin: 0 0 16px; font-size: 1.15rem; }
+    p { margin: 8px 0 20px; }
+    header small { letter-spacing: .13em; font-weight: 700; }
+    header p, .ayuda { color: #4c6661; }
+    .panel { background: white; border: 1px solid #d4dfd8; border-radius: 14px; padding: 24px; margin-top: 20px; min-width: 0; }
+    .columnas { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    label { display: block; font-weight: 650; margin-bottom: 8px; }
+    textarea { display: block; width: 100%; padding: 12px; border: 1px solid #9eb5ac; border-radius: 8px; font: .9rem/1.5 ui-monospace, monospace; resize: vertical; background: #fcfdfb; color: inherit; }
+    #formula { font-size: 1.2rem; }
+    .acciones, .simbolos { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    button { border: 1px solid #b3c7bd; border-radius: 7px; padding: 10px 14px; background: white; color: #193f35; cursor: pointer; font: inherit; font-weight: 600; }
+    button:hover { background: #edf5ef; }
+    button:focus-visible, textarea:focus-visible { outline: 3px solid #679fca; outline-offset: 2px; }
+    .principal { background: #165f49; color: white; border-color: #165f49; }
+    .principal:hover { background: #104834; }
+    .simbolos button { padding: 5px 14px; font-size: 1.2rem; }
+    .ayuda { font-size: .85rem; margin-top: 10px; }
+    .error { color: #a32e26; font-weight: 650; }
+    .exito { color: #165f49; font-weight: 650; }
+    #lectura { overflow-wrap: anywhere; font-family: ui-monospace, monospace; }
+    #errores { padding-left: 22px; }
+    #errores li { margin: 8px 0; overflow-wrap: anywhere; }
+    #arbol { overflow: auto; max-height: 650px; }
+    #arbol ul { list-style: none; padding-left: 22px; border-left: 1px solid #c9d8cf; }
+    #arbol > ul { padding-left: 0; border: 0; }
+    #arbol li { margin-top: 10px; }
+    #arbol span { display: inline-block; padding: 6px 10px; border-radius: 6px; background: #edf4ef; font: .85rem/1.5 ui-monospace, monospace; }
+    pre { white-space: pre-wrap; overflow-wrap: anywhere; max-height: 500px; overflow: auto; font-size: .85rem; }
+    summary { cursor: pointer; font-weight: 650; }
+    .aviso { background: #fff5d9; border: 1px solid #d8bd72; border-radius: 8px; padding: 12px; }
+    @media (max-width: 760px) { .columnas { grid-template-columns: 1fr; gap: 0; } .panel { padding: 18px; } }
+  </style>
+</head>
+<body>
+  <header>
+    <small>MM3032 · INTEGRANTE 1</small>
+    <h1>Explorador de lógica de primer orden</h1>
+    <p>Prueba la sintaxis, valida tus entradas e inspecciona las ligaduras del árbol.</p>
+  </header>
+  <p id="inicio" class="aviso">Para iniciar, ejecuta <code>python3 -m http.server 8000</code> en esta carpeta y abre <code>http://localhost:8000</code>.</p>
+  <main>
+    <section class="panel" aria-labelledby="titulo-formula">
+      <h2 id="titulo-formula">1. Fórmula</h2>
+      <label for="formula">Expresión de primer orden</label>
+      <textarea id="formula" rows="2" spellcheck="false"></textarea>
+      <div class="simbolos" role="group" aria-label="Insertar símbolos lógicos">
+        <button type="button" data-simbolo="¬" aria-label="Insertar negación">¬</button>
+        <button type="button" data-simbolo="∧" aria-label="Insertar conjunción">∧</button>
+        <button type="button" data-simbolo="∨" aria-label="Insertar disyunción">∨</button>
+        <button type="button" data-simbolo="→" aria-label="Insertar implicación">→</button>
+        <button type="button" data-simbolo="∀" aria-label="Insertar universal">∀</button>
+        <button type="button" data-simbolo="∃" aria-label="Insertar existencial">∃</button>
+        <button type="button" data-simbolo="=" aria-label="Insertar igualdad">=</button>
+        <button type="button" data-simbolo="(" aria-label="Abrir paréntesis">(</button>
+        <button type="button" data-simbolo=")" aria-label="Cerrar paréntesis">)</button>
+      </div>
+      <p class="ayuda">Precedencia: ¬, ∀/∃, ∧, ∨, →. La implicación asocia a la derecha. También puedes escribir forall, exists, not, and, or y -&gt;.</p>
+    </section>
+    <div class="columnas">
+      <section class="panel">
+        <h2>2. Lenguaje</h2>
+        <label for="lenguaje">Funciones y predicados (JSON)</label>
+        <textarea id="lenguaje" rows="16" spellcheck="false"></textarea>
+      </section>
+      <section class="panel">
+        <h2>3. Interpretación y entorno</h2>
+        <label for="interpretacion">Dominio y tablas (JSON)</label>
+        <textarea id="interpretacion" rows="10" spellcheck="false"></textarea>
+        <label for="entorno" style="margin-top: 12px">Asignación de variables libres (JSON)</label>
+        <textarea id="entorno" rows="3" spellcheck="false"></textarea>
+        <p class="ayuda">Ejemplo: {"x":"a"}. Los valores deben pertenecer al dominio. Para una fórmula cerrada puedes usar {}.</p>
+      </section>
+    </div>
+    <div class="acciones">
+      <button type="button" id="analizar" class="principal">Analizar fórmula y crear árbol</button>
+      <button type="button" id="validar">Validar todas las entradas</button>
+      <button type="button" id="ejemplo">Restablecer ejemplo</button>
+    </div>
+    <section class="panel" aria-labelledby="titulo-resultado">
+      <h2 id="titulo-resultado">Resultado del análisis</h2>
+      <p id="estado" role="status" aria-live="polite"></p>
+      <p id="lectura"></p>
+      <p id="variables"></p>
+      <ul id="errores"></ul>
+      <div id="arbol" aria-label="Árbol sintáctico"></div>
+      <details style="margin-top: 20px">
+        <summary>Ver salida JSON del contrato</summary>
+        <pre id="json"></pre>
+      </details>
+    </section>
+    <p class="ayuda">Esta entrega comprueba el parser y las validaciones. El cálculo de verdadero/falso y sus justificaciones está pendiente.</p>
+  </main>
+  <script type="module">
+    import './src/app.js';
+    document.getElementById('inicio').hidden = true;
+  </script>
+</body>
+</html>

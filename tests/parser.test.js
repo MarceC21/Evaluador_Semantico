@@ -1,9 +1,8 @@
-// Pruebas del Integrante 1. Ejecutar con:  node --test
-const test = require('node:test');
-const assert = require('node:assert/strict');
-const L = require('../src/parser.js');
-const { analizarFormula, validarInterpretacion, validarEntorno } = L;
-const { variablesLibres, variablesLigadas, formatear } = L.parser;
+// Pruebas del Integrante 1. Ejecutar con: node --test
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { analizarFormula, variablesLibres, variablesLigadas, formatear } from '../src/parser.js';
+import { validarInterpretacion, validarEntorno } from '../src/validaciones.js';
 
 const lenguaje = {
   funciones: [{ nombre: 'f', aridad: 1 }, { nombre: 'c', aridad: 0 }],
@@ -232,7 +231,7 @@ test('Interpretación con símbolos extra solo avisa', () => {
 /* ---------- Entorno ---------- */
 test('Entorno', () => {
   const i = interp();
-  assert.deepEqual(validarEntorno(['x'], i, { x: 'a' }), { ok: true, entorno: { x: 'a' }, advertencias: [] });
+  assert.deepEqual(validarEntorno(['x'], i, { x: 'a' }), { ok: true, entorno: Object.assign(Object.create(null), { x: 'a' }), advertencias: [] });
   assert.equal(validarEntorno(['x'], i, {}).errores[0].codigo, 'ENTORNO_FALTANTE');
   assert.equal(validarEntorno(['x'], i, { x: 'z' }).errores[0].codigo, 'ENTORNO_INVALIDO');
   assert.equal(validarEntorno(['x'], i, undefined).errores[0].codigo, 'ENTORNO_FALTANTE');
