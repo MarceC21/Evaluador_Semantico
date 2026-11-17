@@ -8,17 +8,50 @@ const lenguaje = {
     { nombre: 'f', aridad: 1 }
   ],
   predicados: [
-    { nombre: 'P', aridad: 1 }
+    { nombre: 'P', aridad: 1 },
+    { nombre: 'R', aridad: 2 }
   ]
 };
 
 const interpretacion = {
   dominio: ['a', 'b'],
-  funciones: {},
+
+  funciones: {
+    c: [
+      {
+        args: [],
+        valor: 'a'
+      }
+    ],
+
+    f: [
+      {
+        args: ['a'],
+        valor: 'b'
+      },
+      {
+        args: ['b'],
+        valor: 'a'
+      }
+    ]
+  },
+
   predicados: {
-    P: [['a']]
+    P: [
+      ['a']
+    ],
+
+    R: [
+      ['a', 'b'],
+      ['b', 'a']
+    ]
   }
 };
+
+
+// --------------------------------------------------
+// Preparación y validaciones
+// --------------------------------------------------
 
 test('Prepara una fórmula cerrada sin calcular un valor de verdad', () => {
   const r = prepararEvaluacion(
@@ -34,6 +67,7 @@ test('Prepara una fórmula cerrada sin calcular un valor de verdad', () => {
   assert.equal('valor' in r, false);
 });
 
+
 test('Una fórmula inválida detiene la preparación', () => {
   const r = prepararEvaluacion(
     'P(x) ∧',
@@ -46,6 +80,7 @@ test('Una fórmula inválida detiene la preparación', () => {
   assert.equal(r.etapa, 'fórmula');
   assert.equal('ast' in r, false);
 });
+
 
 test('Una interpretación inválida no entrega un AST preparado', () => {
   const r = prepararEvaluacion(
@@ -62,6 +97,7 @@ test('Una interpretación inválida no entrega un AST preparado', () => {
   assert.equal(r.etapa, 'interpretación');
   assert.equal('ast' in r, false);
 });
+
 
 test('Una fórmula abierta exige entorno con valores dentro del dominio', () => {
   for (const [entorno, codigo] of [
@@ -81,16 +117,16 @@ test('Una fórmula abierta exige entorno con valores dentro del dominio', () => 
     assert.equal('ast' in r, false);
   }
 
-  assert.equal(
-    prepararEvaluacion(
-      'P(x)',
-      lenguaje,
-      interpretacion,
-      { x: 'a' }
-    ).ok,
-    true
+  const valido = prepararEvaluacion(
+    'P(x)',
+    lenguaje,
+    interpretacion,
+    { x: 'a' }
   );
+
+  assert.equal(valido.ok, true);
 });
+
 
 test('Conserva una asignación propia para __proto__', () => {
   const r = prepararEvaluacion(
@@ -101,22 +137,30 @@ test('Conserva una asignación propia para __proto__', () => {
   );
 
   assert.equal(r.ok, true);
+
   assert.equal(
     Object.hasOwn(r.entorno, '__proto__'),
     true
   );
-  assert.equal(r.entorno.__proto__, 'a');
+
+  assert.equal(
+    r.entorno.__proto__,
+    'a'
+  );
+
   assert.equal(
     JSON.stringify(r.entorno),
     '{"__proto__":"a"}'
   );
 });
 
+
 test('Conserva advertencias de interpretación y entorno', () => {
   const modelo = {
     ...interpretacion,
+
     predicados: {
-      P: [['a']],
+      ...interpretacion.predicados,
       Extra: [['a']]
     }
   };
@@ -134,6 +178,11 @@ test('Conserva advertencias de interpretación y entorno', () => {
   assert.equal(r.ok, true);
   assert.equal(r.advertencias.length, 2);
 });
+
+
+// --------------------------------------------------
+// Evaluación de predicados
+// --------------------------------------------------
 
 test('Evalúa un predicado verdadero', () => {
   const preparado = prepararEvaluacion(
@@ -155,12 +204,101 @@ test('Evalúa un predicado verdadero', () => {
   assert.equal(resultado.valor, true);
 });
 
+
 test('Evalúa un predicado falso', () => {
   const preparado = prepararEvaluacion(
     'P(x)',
     lenguaje,
     interpretacion,
     { x: 'b' }
+  );
+
+  assert.equal(preparado.ok, true);
+
+  const resultado = evaluar(
+    preparado.ast,
+    interpretacion,
+    preparado.entorno
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, false);
+});
+
+
+test('Evalúa un predicado con una función', () => {
+  const preparado = prepararEvaluacion(
+    'P(f(x))',
+    lenguaje,
+    interpretacion,
+    { x: 'a' }
+  );
+
+  assert.equal(preparado.ok, true);
+
+  const resultado = evaluar(
+    preparado.ast,
+    interpretacion,
+    preparado.entorno
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, false);
+});
+
+
+test('Evalúa un predicado binario', () => {
+  const preparado = prepararEvaluacion(
+    'R(x, f(x))',
+    lenguaje,
+    interpretacion,
+    { x: 'a' }
+  );
+
+  assert.equal(preparado.ok, true);
+
+  const resultado = evaluar(
+    preparado.ast,
+    interpretacion,
+    preparado.entorno
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, true);
+});
+
+
+// --------------------------------------------------
+// Evaluación de igualdad
+// --------------------------------------------------
+
+test('Evalúa una igualdad verdadera', () => {
+  const preparado = prepararEvaluacion(
+    'f(x) = c',
+    lenguaje,
+    interpretacion,
+    { x: 'b' }
+  );
+
+  assert.equal(preparado.ok, true);
+
+  const resultado = evaluar(
+    preparado.ast,
+    interpretacion,
+    preparado.entorno
+  );
+
+  assert.equal(resultado.ok, true);
+  assert.equal(resultado.valor, true);
+});
+
+
+test('Evalúa una igualdad falsa', () => {
+  const preparado = prepararEvaluacion(
+    'f(x) = c',
+    lenguaje,
+    interpretacion,
+    { x: 'a' }
   );
 
   assert.equal(preparado.ok, true);
